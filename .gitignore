@@ -1,0 +1,35 @@
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+venv/
+env/
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# IDE/Editor specific settings
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs and debug files
+*.log
+*.sqlite3
+
+# Media and generated static files
+media/
+staticfiles/
+
+# Secrets
+*.env
+.env.*
+venv
+.venv
+
+# Compiled migrations (optional, migrations themselves are typically versioned)
+**/migrations/*.pyc
+**/migrations/__pycache__/
