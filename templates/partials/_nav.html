@@ -1,0 +1,30 @@
+<nav class="bg-gray-950 text-white shadow">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+    
+      <div class="text-lg font-bold">
+        <a href="#" class="hover:text-gray-200">Logo</a>
+      </div>
+
+      <div class="hidden md:flex space-x-6">
+        <a href="#" class="hover:text-gray-200">Meus Agendamentos</a>
+        <a href="#" class="hover:text-gray-200">Gerenciamento</a>
+        <button class="hover:text-gray-200 cursor-po" id='buttonTheme'=>Trocar Tema</button>
+        <a href="#" class="hover:text-gray-200">Conta</a>
+      </div>
+
+      <div class="md:hidden">
+        <button id="menu-toggle" class="text-white focus:outline-none">
+          <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-black">
+      <a href="#" class="block px-4 py-2 hover:bg-blue-950">Meus Agendamentos</a>
+      <a href="#" class="block px-4 py-2 hover:bg-blue-950">Gerenciamento</a>
+      <a href="#" class="hover:text-gray-200" id='buttonTheme'>Trocar Tema</a>
+      <a href="#" class="block px-4 py-2 hover:bg-blue-950">Conta</a>
+    </div>
+</nav>
