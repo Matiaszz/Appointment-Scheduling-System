@@ -7,11 +7,9 @@ menuToggle.addEventListener('click', () => {
 
 const switchTheme = document.getElementById('switchTheme');
 
-// Selecione os dois botões "Trocar Tema" com os novos IDs
 const buttonThemeDesktop = document.getElementById('buttonThemeDesktop');
 const buttonThemeMobile = document.getElementById('buttonThemeMobile');
 
-// Função para alternar os temas
 const toggleTheme = () => {
     if (switchTheme.classList.contains('bg-zinc-900')) {
         switchTheme.classList.remove('bg-zinc-900');
