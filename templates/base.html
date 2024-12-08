@@ -7,14 +7,17 @@
     <title>Agendamento</title>
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
 </head>
-<body class='bg-zinc-900' id='switchTheme'>
-  {% include "partials/_nav.html" %}
-  
+<body class='bg-zinc-900 text-white' id='switchTheme'>
+    <div>
+      {% include "partials/_nav.html" %}
 
-  {% block content %}
-    
-  {% endblock content %}
- 
+
+      {% block content %}
+        
+      {% endblock content %}
+
+      {% include "partials/_footer.html" %}
+    </div>
 
   <script src="{% static "js/script.js" %}"></script>
 </body>
