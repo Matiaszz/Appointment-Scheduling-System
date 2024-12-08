@@ -33,3 +33,7 @@ venv
 # Compiled migrations (optional, migrations themselves are typically versioned)
 **/migrations/*.pyc
 **/migrations/__pycache__/
+
+
+# js
+node_modules
