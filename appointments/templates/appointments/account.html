@@ -1,6 +1,64 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-    logado
-    {{request.user.email}}
-    <a href="{% url "appointments:logout" %}">logout aqui</a>
-{% endblock content %}
+<div class="min-h-screen  flex flex-col items-center py-10">
+    <div class="bg-zinc-950 shadow-lg rounded-lg p-6 w-full max-w-3xl">
+        <h2 class="text-2xl font-semibold text-white mb-4">Meu Perfil</h2>
+        <div class="flex flex-col md:flex-row items-center md:items-start">
+            <!-- profile picture -->
+            <div class="flex flex-col items-center md:w-1/3">
+                <img src="{{ request.user.profile_picture.url }}" alt="Foto de perfil"
+                    class="w-32 h-32 rounded-full border-2 border-gray-300 object-cover mb-4">
+                <form method="post" enctype="multipart/form-data" action="{% url 'appointments:update_profile_picture' %}" class="w-full">
+                    {% csrf_token %}
+                    <label class="block text-white mb-1">Alterar foto:</label>
+                    <input type="file" id="profile_picture" name="profile_picture"
+                        class="block w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:bg-gray-50 file:text-black hover:file:bg-gray-100">
+                    <button type="submit"
+                        class="mt-3 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition">
+                        Salvar
+                    </button>
+                </form>
+            </div>
+
+            <!-- Informações do usuário -->
+            <div class="flex-1 mt-6 md:mt-0 md:ml-6">
+                <h3 class="text-lg font-semibold text-blue-950 mb-4">Informações do Usuário</h3>
+                <form method="post" action="{% url 'appointments:update_profile' %}">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="username" class="block text-white mb-1">Nome de Usuário:</label>
+                        <input type="text" id="username" name="username" value="{{ request.user.username }}"
+                            class="w-full border rounded-md py-2 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-white mb-1">Email:</label>
+                        <input type="email" id="email" name="email" value="{{ request.user.email }}"
+                            class="w-full border rounded-md py-2 px-4 text-black focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="phone_number" class="block text-white mb-1">Telefone:</label>
+                        <input type="phone_number" id="phone_number" name="phone_number" value="{{ request.user.phone_number }}"
+                            class="w-full border rounded-md py-2 px-4 text-black focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button type="submit"
+                        class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition">
+                        Atualizar
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class='flex justify-start gap-6'>
+            <div class="mt-6">
+                {% comment %} send an email to change password {% endcomment %}
+                <a href="{% url 'appointments:index' %}"
+                    class="text-blue-500 hover:text-blue-700 underline">Alterar senha</a>
+            </div>
+            <div class="mt-6">
+                <a href="{% url 'appointments:logout' %}"
+                    class="text-red-500 hover:text-red-700 underline">Sair da conta</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

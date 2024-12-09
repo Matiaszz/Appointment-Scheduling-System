@@ -11,6 +11,16 @@ class CustomUser(AbstractUser):
     user_type = models.CharField(
         max_length=20, choices=USER_TYPES, default='client')
 
+    profile_picture = models.ImageField(
+        upload_to='profile_pictures/%Y/%m',
+        default='profile_pictures/default.jpg',
+        blank=True, null=True,
+        verbose_name='Foto de perfil'
+    )
+    email = models.EmailField(unique=True)
+
+    phone_number = models.CharField(max_length=11, default='')
+
     def is_superuser_custom(self):
         return self.user_type == 'superuser'
 
