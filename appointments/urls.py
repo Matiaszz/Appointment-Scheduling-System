@@ -8,5 +8,5 @@ urlpatterns = [
     path('', index_view, name='index'),
     path('authentication/', AuthView.as_view(), name='authentication'),
     path('account/', AccountView, name='account'),
-    path('logout', logout_view, name='logout')
+    path('logout/', logout_view, name='logout')
 ]
