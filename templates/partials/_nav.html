@@ -6,8 +6,12 @@
       </div>
 
       <div class="hidden md:flex space-x-6">
-        <a href="#" class="hover:text-gray-200">Meus Agendamentos</a>
-        <a href="#" class="hover:text-gray-200">Gerenciamento</a>
+        {% if request.user %}
+          <a href="#" class="hover:text-gray-200">Meus Agendamentos</a>
+          {% if request.user.user_type == 'employee' %}
+            <a href="#" class="hover:text-gray-200">Gerenciamento</a>
+          {% endif %}
+        {% endif %}
         <button class="hover:text-gray-200 cursor-pointer" id="buttonThemeDesktop">Trocar Tema</button>
         <a href="{% url "appointments:account" %}" class="hover:text-gray-200">Conta</a>
       </div>
@@ -22,8 +26,12 @@
     </div>
 
     <div id="mobile-menu" class="hidden md:hidden bg-black">
-      <a href="#" class="block px-4 py-2 hover:bg-blue-950 text-center">Meus Agendamentos</a>
-      <a href="#" class="block px-4 py-2 hover:bg-blue-950 text-center">Gerenciamento</a>
+        {% if request.user %}
+          <a href="#" class="flex px-4 py-2 hover:bg-blue-950 w-full justify-center">Meus Agendamentos</a>
+          {% if request.user.user_type == 'employee' %}
+            <a href="#" class="flex px-4 py-2 hover:bg-blue-950 w-full justify-center">Gerenciamento</a>
+          {% endif %}
+        {% endif %}
       <button class="block px-4 py-2 hover:bg-blue-950 w-full" id="buttonThemeMobile">Trocar Tema</button>
       <a href="{% url "appointments:account" %}" class="block px-4 py-2 hover:bg-blue-950 text-center">Conta</a>
     </div>
