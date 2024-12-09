@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+    logado
+    {{request.user.email}}
+    <a href="{% url "appointments:logout" %}">logout aqui</a>
+{% endblock content %}

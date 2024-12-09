@@ -11,7 +11,12 @@
 <body class='bg-zinc-900 text-white' id='switchTheme'>
     <div>
       {% include "partials/_nav.html" %}
-
+      {% for message in messages %}
+          <div class="mb-4 p-4 rounded-lg {{message.success}}">
+              <p class='{{message.tags}}'>{{ message }}</p>
+          </div>
+      {% endfor %}
+      
       {% block content %}
         
       {% endblock content %}

@@ -1143,3 +1143,81 @@ video {
   }
 }
 
+form p {
+  margin-bottom: 1.5rem;
+}
+
+form p label {
+  font-weight: bold;
+  color: #e2e8f0; 
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.errorlist + p, li{
+  color:red
+}
+form p input,
+form p select,
+form p textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #2d3748; 
+  color: #e2e8f0; 
+  border-radius: 0.375rem; 
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+form p input:focus,
+form p select:focus,
+form p textarea:focus {
+  outline: none;
+  border-color: #63b3ed; 
+  background-color: #1a202c; 
+}
+
+button {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+form p .errorlist {
+  color: #f56565; 
+  margin-top: 0.5rem;
+}
+
+form p .errorlist li {
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+/* messages */
+@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
+
+.info,
+.success,
+.warning,
+.error {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+  text-align: center;
+}
+.info {
+  color: #059;
+  background-color: #BEF;
+}
+.success {
+  color: #270;
+  background-color: #DFF2BF;
+}
+.warning {
+  color: #9F6000;
+  background-color: #FEEFB3;
+}
+.error {
+  color: #D8000C;
+  background-color: #FFBABA;
+}

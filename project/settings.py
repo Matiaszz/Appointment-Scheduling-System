@@ -42,9 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'appointments',
-
     'rest_framework',
 ]
+
+AUTH_USER_MODEL = 'appointments.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -139,3 +140,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+LOGIN_URL = '/authentication/'
