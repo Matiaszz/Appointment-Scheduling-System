@@ -6,7 +6,7 @@
       </div>
 
       <div class="hidden md:flex space-x-6">
-        {% if request.user %}
+        {% if request.user.username %}
           <a href="#" class="hover:text-gray-200">Meus Agendamentos</a>
           {% if request.user.user_type == 'employee' %}
             <a href="#" class="hover:text-gray-200">Gerenciamento</a>
@@ -26,7 +26,7 @@
     </div>
 
     <div id="mobile-menu" class="hidden md:hidden bg-black">
-        {% if request.user %}
+        {% if request.user.username %}
           <a href="#" class="flex px-4 py-2 hover:bg-blue-950 w-full justify-center">Meus Agendamentos</a>
           {% if request.user.user_type == 'employee' %}
             <a href="#" class="flex px-4 py-2 hover:bg-blue-950 w-full justify-center">Gerenciamento</a>
