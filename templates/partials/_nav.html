@@ -6,10 +6,10 @@
       </div>
 
       <div class="hidden md:flex space-x-6">
-        <a href="#" class="hover:text-gray-200">Nossos serviços</a>
+        <a href="{% url "appointments:our_services" %}" class="hover:text-gray-200">Nossos serviços</a>
         {% if request.user.username %}
           <a href="#" class="hover:text-gray-200">Meus Agendamentos</a>
-          {% if request.user.user_type == 'employee' %}
+          {% if request.user.user_type == 'employee' or request.user.user_type == 'superuser' %}
             <a href="#" class="hover:text-gray-200">Gerenciamento</a>
           {% endif %}
         {% endif %}
@@ -30,7 +30,7 @@
     <div id="mobile-menu" class="hidden md:hidden bg-black">
         {% if request.user.username %}
           <a href="#" class="flex px-4 py-2 hover:bg-blue-950 w-full justify-center">Meus Agendamentos</a>
-          {% if request.user.user_type == 'employee' %}
+          {% if request.user.user_type == 'employee' or request.user.user_type == 'superuser' %}
             <a href="#" class="flex px-4 py-2 hover:bg-blue-950 w-full justify-center">Gerenciamento</a>
           {% endif %}
         {% endif %}

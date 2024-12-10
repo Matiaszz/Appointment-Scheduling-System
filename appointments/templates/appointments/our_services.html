@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="flex items-center justify-center min-h-screen">
+    <article class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 items-stretch max-w-screen-xl mx-auto">
+
+        <div class="bg-gray-950 gap-8 p-8 rounded-lg shadow-md flex flex-col justify-center">
+            <h1 class="text-3xl font-bold text-gray-200 mb-6">Nossos Serviços</h1>
+            <p class="text-gray-200 leading-relaxed mb-6">
+                Na Barbearia Rei do Corte, oferecemos uma variedade de serviços para atender todas as suas necessidades de cuidados pessoais. Confira abaixo a lista de serviços que disponibilizamos:
+            </p>
+            <ul class="list-disc list-inside text-gray-200 leading-relaxed mb-6 p-6">
+                <li class='text-white'>
+                    <strong class='text-blue-600'>Corte de cabelo clássico:</strong> Para quem busca um estilo tradicional e atemporal, com acabamentos impecáveis e atenção aos detalhes.
+                </li>
+                <li class='text-white'>
+                    <strong class='text-blue-600'>Corte degradê (fade):</strong> Um dos estilos mais populares, com transições suaves e modernas que destacam o seu visual.
+                </li>
+                <li class='text-white'>
+                    <strong class='text-blue-600'>Alinhamento de barba:</strong> Mantemos a barba impecável, alinhada e simétrica, garantindo um visual limpo e bem cuidado.
+                </li>
+                <li class='text-white'>
+                    <strong class='text-blue-600'>Design de barba personalizado:</strong> Criamos estilos únicos que combinam com o formato do seu rosto e sua personalidade.
+                </li>
+                <li class='text-white'>
+                    <strong class='text-blue-600'>Tratamentos capilares especializados:</strong> Hidratação, fortalecimento e cuidados para manter seus fios saudáveis e revitalizados.
+                </li>
+                <li class='text-white'>
+                    <strong class='text-blue-600'>Corte infantil:</strong> Atendimento especializado para crianças, com paciência e um ambiente amigável que deixa os pequenos à vontade.
+                </li>
+                <li class='text-white'>
+                    <strong class='text-blue-600'>Shampoo e hidratação:</strong> Produtos premium para limpeza profunda e hidratação, deixando seu cabelo macio e revitalizado.
+                </li>
+            </ul>
+            <p class="text-gray-200 leading-relaxed mb-6">
+                Todos os nossos serviços são realizados por barbeiros experientes que utilizam produtos de alta qualidade, garantindo resultados excepcionais e a satisfação de nossos clientes.
+            </p>
+            <p class="text-gray-200 leading-relaxed mb-6">
+                Se você está pronto para transformar seu visual ou apenas precisa de um retoque, estamos aqui para ajudar. Nossa equipe está sempre atualizada com as últimas tendências e técnicas para oferecer o melhor atendimento.
+            </p>
+            <div class="mt-6">
+                <a href="#" class="bg-blue-600 text-white font-bold py-3 px-6 rounded hover:bg-blue-700 transition duration-300">
+                    Novo Agendamento
+                </a>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-center">
+            <img src="{% static 'imgs/tools-barber.jpg' %}" 
+                 alt="imagem de serviços da barbearia" 
+                 class="rounded-lg shadow-md w-full h-full object-cover">
+        </div>
+
+    </article>
+</div>
+{% endblock content %}

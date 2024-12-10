@@ -1,6 +1,6 @@
 
 from django.urls import path
-from appointments.views import (index_view)
+from appointments.views import index_view, our_services_view
 from appointments.pages.account_views import (
     AccountView,
     update_profile_picture_view,
@@ -11,6 +11,7 @@ app_name = 'appointments'
 
 urlpatterns = [
     path('', index_view, name='index'),
+    path('our_services/', our_services_view, name='our_services'),
     path('authentication/', AuthView.as_view(), name='authentication'),
     path('account/', AccountView.as_view(), name='account'),
     path('update_profile/', update_user_info,
