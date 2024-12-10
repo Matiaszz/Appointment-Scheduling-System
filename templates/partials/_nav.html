@@ -6,12 +6,14 @@
       </div>
 
       <div class="hidden md:flex space-x-6">
+        <a href="#" class="hover:text-gray-200">Nossos serviços</a>
         {% if request.user.username %}
           <a href="#" class="hover:text-gray-200">Meus Agendamentos</a>
           {% if request.user.user_type == 'employee' %}
             <a href="#" class="hover:text-gray-200">Gerenciamento</a>
           {% endif %}
         {% endif %}
+        
         <button class="hover:text-gray-200 cursor-pointer" id="buttonThemeDesktop">Trocar Tema</button>
         <a href="{% url "appointments:account" %}" class="hover:text-gray-200">Conta</a>
       </div>

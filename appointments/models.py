@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import FileExtensionValidator
 
 
 class CustomUser(AbstractUser):
@@ -15,7 +16,9 @@ class CustomUser(AbstractUser):
         upload_to='profile_pictures/%Y/%m',
         default='profile_pictures/default.jpg',
         blank=True, null=True,
-        verbose_name='Foto de perfil'
+        verbose_name='Foto de perfil',
+        validators=[FileExtensionValidator(allowed_extensions=[
+            'jpg', 'jpeg', 'png'])]
     )
     email = models.EmailField(unique=True)
 
