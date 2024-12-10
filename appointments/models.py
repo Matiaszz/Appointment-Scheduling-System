@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import FileExtensionValidator
+from .utils.validations import validate_positive_price
 
 
 class CustomUser(AbstractUser):
@@ -43,22 +44,29 @@ class BarberService(models.Model):
         ('custom', 'Personalizado'),
     )
 
-    PAYMENT_STATUS_TYPES = (
-        ('paid', 'Pago'),
-        ('pending', 'Pendente'),
-        ('canceled', 'Cancelado'),
-
-    )
     service_name = models.CharField(
         max_length=50, verbose_name='Nome do serviço')
 
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(
+        max_digits=6, decimal_places=2, validators=[validate_positive_price],
+        verbose_name='Preço')
 
     service_type = models.CharField(
-        max_length=30, choices=SERVICE_TYPES, default='custom')
+        max_length=30, choices=SERVICE_TYPES, default='hair',
+        verbose_name='Tipo de serviço')
 
-    payment_status_type = models.CharField(
-        max_length=30, choices=PAYMENT_STATUS_TYPES, default='pending')
+    description = models.TextField(
+        blank=True, verbose_name='Descrição do serviço')
+
+    image = models.ImageField(
+        upload_to='services/', blank=True, null=True,
+        verbose_name='Imagem do serviço')
+
+    is_active = models.BooleanField(
+        default=True, verbose_name='Serviço Ativo')
+
+    duration = models.PositiveIntegerField(
+        null=True, blank=True, verbose_name='Duração (minutos)')
 
     def __str__(self):
-        return f"{self.service_name} - R$ {self.price}"
+        return f'{self.service_name} - R$ {self.price}'

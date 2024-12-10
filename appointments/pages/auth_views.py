@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import View
 from django.contrib.auth import login, logout
 from django.contrib import messages
-from ..forms import ClientCreationForm
+from ..forms.account_forms import ClientCreationForm
 
 
 class AuthView(View):
