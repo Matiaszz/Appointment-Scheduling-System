@@ -32,3 +32,33 @@ class CustomUser(AbstractUser):
 
     def is_cliente(self):
         return self.user_type == 'client'
+
+
+class BarberService(models.Model):
+    SERVICE_TYPES = (
+        ('hair', 'Cabelo'),
+        ('beard', 'Barba'),
+        ('kids_haircut', 'Corte infantil'),
+        ('hair_treatment', 'Tratamento capilar'),
+        ('custom', 'Personalizado'),
+    )
+
+    PAYMENT_STATUS_TYPES = (
+        ('paid', 'Pago'),
+        ('pending', 'Pendente'),
+        ('canceled', 'Cancelado'),
+
+    )
+    service_name = models.CharField(
+        max_length=50, verbose_name='Nome do serviço')
+
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+
+    service_type = models.CharField(
+        max_length=30, choices=SERVICE_TYPES, default='custom')
+
+    payment_status_type = models.CharField(
+        max_length=30, choices=PAYMENT_STATUS_TYPES, default='pending')
+
+    def __str__(self):
+        return f"{self.service_name} - R$ {self.price}"

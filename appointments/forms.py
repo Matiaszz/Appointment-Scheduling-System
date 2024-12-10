@@ -7,7 +7,8 @@ class ClientCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = [
-            'username', 'email', 'phone_number', 'password1', 'password2',
+            'username', 'first_name', 'last_name', 'email', 'phone_number',
+            'password1', 'password2',
             'profile_picture'
         ]
 
@@ -28,7 +29,8 @@ class ClientCreationForm(UserCreationForm):
 class EmployeeCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'phone_number', 'password1',
+        fields = ['username', 'first_name', 'last_name',  'email',
+                  'phone_number', 'password1',
                   'password2', 'profile_picture']
 
     def clean_email(self):
