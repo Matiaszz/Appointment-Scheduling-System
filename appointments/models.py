@@ -38,6 +38,7 @@ class CustomUser(AbstractUser):
 class BarberService(models.Model):
     SERVICE_TYPES = (
         ('hair', 'Cabelo'),
+        ('eyebrow', 'Sobrancelha'),
         ('beard', 'Barba'),
         ('kids_haircut', 'Corte infantil'),
         ('hair_treatment', 'Tratamento capilar'),
@@ -60,7 +61,10 @@ class BarberService(models.Model):
 
     image = models.ImageField(
         upload_to='services/', blank=True, null=True,
-        verbose_name='Imagem do serviço')
+        verbose_name='Imagem do serviço',
+        validators=[FileExtensionValidator(allowed_extensions=[
+            'jpg', 'jpeg', 'png'])]
+    )
 
     is_active = models.BooleanField(
         default=True, verbose_name='Serviço Ativo')
