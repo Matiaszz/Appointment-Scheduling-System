@@ -4,7 +4,7 @@ from appointments.views import index_view, our_services_view
 from appointments.pages.account_views import (
     AccountView,
     update_profile_picture_view,
-    update_user_info
+    UserProfileUpdateView
 )
 from appointments.pages.barber_views import ServicesView
 from appointments.pages.auth_views import AuthView, logout_view
@@ -21,9 +21,9 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
 
     # Update views
-    path('update_profile/', update_user_info,
+    path('account/update/', UserProfileUpdateView.as_view(),
          name='update_profile'),
-    path('update_profile_picture/', update_profile_picture_view,
+    path('account/update/profile_picture/', update_profile_picture_view,
          name='update_profile_picture'),
 
     # Barber views

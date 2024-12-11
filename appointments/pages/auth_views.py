@@ -7,9 +7,60 @@ from ..forms.account_forms import ClientCreationForm
 
 
 class AuthView(View):
+    """
+    AuthView handles the authentication (login) and registration process
+    for users.
+
+    It displays the login form and the client registration form when the user
+    is not authenticated.
+
+    If the user is already authenticated, they are redirected to the account
+    page.
+
+    Attributes
+    ----------
+    template_name : str
+        The template used to render the authentication page.
+
+    Methods
+    -------
+    get(request, *args, **kwargs)
+        Renders the authentication page with the login and registration forms
+        if the user is not authenticated.
+
+    post(request, *args, **kwargs)
+        Handles form submissions for logging in or registering a new client.
+        - If the 'login' form is submitted, attempts to authenticate the user.
+        - If the 'register' form is submitted, attempts to create a new client.
+    """
+
     template_name = 'appointments/authentication.html'
 
     def get(self, request, *args, **kwargs):
+        """
+        Handles GET requests to render the authentication page.
+
+        If the user is not authenticated, it renders the login and client
+        registration forms.
+        If the user is already authenticated, it redirects them to the account
+        page.
+
+        Parameters
+        ----------
+        request : HttpRequest
+            The request object containing metadata about the request.
+
+        *args, **kwargs :
+            Additional arguments that may be passed to the view.
+
+        Returns
+        -------
+        HttpResponse
+            - If the user is not authenticated, it renders the authentication
+            template with forms.
+            - If the user is authenticated, it redirects them to the account
+            page.
+        """
         if not self.request.user.is_authenticated:
             client_form = ClientCreationForm()
             login_form = AuthenticationForm()
@@ -20,6 +71,26 @@ class AuthView(View):
         return redirect('appointments:account')
 
     def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests to process the form submissions for logging in or
+        registering.
+
+        Parameters
+        ----------
+        request : HttpRequest
+            The request object containing metadata about the request.
+
+        *args, **kwargs :
+            Additional arguments passed to the view.
+
+        Returns
+        -------
+        HttpResponse
+            Redirects to the account page if the login or registration is
+            successful,
+            or re-renders the authentication page with error messages if the
+            form is invalid.
+        """
         if 'login' in request.POST:
             login_form = AuthenticationForm(request, data=request.POST)
 
@@ -32,8 +103,7 @@ class AuthView(View):
             return redirect('appointments:authentication')
 
         elif 'register' in request.POST:
-            client_form = ClientCreationForm(
-                request.POST, request.FILES)
+            client_form = ClientCreationForm(request.POST, request.FILES)
 
             if client_form.is_valid():
                 client_form.save()
@@ -42,8 +112,8 @@ class AuthView(View):
 
             messages.error(
                 request,
-                ('Não foi possível registrar o cliente. Verifique os dados '
-                 'e tente novamente.')
+                ('Não foi possível registrar o cliente. Verifique os dados e'
+                 ' tente novamente.')
             )
 
         return render(request, self.template_name, {
@@ -53,5 +123,19 @@ class AuthView(View):
 
 
 def logout_view(request):
+    """
+    Logs the user out and redirects them to the authentication page.
+
+    Parameters
+    ----------
+    request : HttpRequest
+        The request object containing metadata about the request.
+
+    Returns
+    -------
+    HttpResponseRedirect
+        Redirects the user to the authentication page after logging them out.
+    """
+
     logout(request)
     return redirect('appointments:authentication')
