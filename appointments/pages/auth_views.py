@@ -163,7 +163,6 @@ class EmployeeAuthView(View):
         if employee_form.is_valid():
             employee_form.save()
             messages.success(request, 'Funcionário registrado com sucesso.')
-
             return redirect('appointments:auth_employee')
 
         messages.error(request, 'Erro ao registrar funcionário.')
