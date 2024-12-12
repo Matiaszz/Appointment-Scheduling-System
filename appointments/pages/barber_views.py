@@ -8,9 +8,6 @@ from ..serializers import ServiceSerializer
 from dotenv import load_dotenv
 import requests
 import os
-import logging
-
-logger = logging.getLogger(__name__)
 
 load_dotenv('.../env/.env')
 
@@ -35,12 +32,10 @@ class ServicesView(LoginRequiredMixin, View):
         service_form = ServiceForm(request.POST, request.FILES)
 
         if service_form.is_valid():
-            print("Dados limpos:", service_form.cleaned_data)
             service = service_form.save(commit=False)
             service.save()
             return redirect('appointments:services_list')
 
-        print("Erros do formulário:", service_form.errors)
         context = {'service_form': service_form}
         return render(self.request, 'appointments/services.html', context)
 

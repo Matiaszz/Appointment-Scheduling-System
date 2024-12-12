@@ -10,12 +10,7 @@
 
             <form method="POST" action="{% url 'appointments:services' %}" enctype="multipart/form-data">
                 {% csrf_token %}
-                
-                {{ service_form.as_p }}
-                
-                <div id="customServiceDiv" class="bg-gray-800 p-4 hidden rounded-lg shadow-md mt-4 ">
-                    
-                </div>
+                {{ service_form.as_p }}   
                 
                 <button type="submit" class="bg-blue-500 text-white p-2 rounded mt-4 w-full">Enviar</button>
             </form>

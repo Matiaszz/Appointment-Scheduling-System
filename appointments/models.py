@@ -71,7 +71,7 @@ class BarberService(models.Model):
         default=True, verbose_name='Serviço Ativo')
 
     duration = models.PositiveIntegerField(
-        null=True, blank=True, verbose_name='Duração (minutos)')
+        verbose_name='Duração (minutos)')
 
     def __str__(self):
         return f'{self.service_name} - R$ {self.price}'

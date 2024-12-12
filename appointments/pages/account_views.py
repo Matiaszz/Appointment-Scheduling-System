@@ -47,7 +47,7 @@ class AccountView(LoginRequiredMixin, View):
         HttpResponse
             The response containing the rendered account page.
         """
-        print(request.user.user_type)
+
         return render(request, self.template_name)
 
 

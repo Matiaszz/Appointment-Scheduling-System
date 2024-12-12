@@ -74,20 +74,17 @@ const customServiceType = () => {
             }
         }
 
-        // Função para abrir o Dropdown no mobile
         const dropdownButton = document.getElementById('dropdownButton');
         const dropdownMenu = document.getElementById('dropdownMenu');
         
         dropdownButton.addEventListener('click', () => {
-            dropdownMenu.classList.toggle('hidden');  // Alterna a visibilidade do menu
+            dropdownMenu.classList.toggle('hidden');  
         });
 
-        // Função para fechar o Dropdown
         const closeDropdown = () => {
-            dropdownMenu.classList.add('hidden');  // Esconde o menu
+            dropdownMenu.classList.add('hidden');  
         };
 
-        // Adicionando o evento de fechamento quando clicar no botão de fechar
         document.getElementById('closeDropdown').addEventListener('click', closeDropdown);
 
 serviceType.addEventListener('change', customServiceType);
