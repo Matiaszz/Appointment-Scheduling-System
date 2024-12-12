@@ -60,10 +60,11 @@ class BarberService(models.Model):
         blank=True, verbose_name='Descrição do serviço')
 
     image = models.ImageField(
-        upload_to='services/', blank=True, null=True,
+        upload_to='services/%Y/%m', blank=True, null=True,
         verbose_name='Imagem do serviço',
         validators=[FileExtensionValidator(allowed_extensions=[
-            'jpg', 'jpeg', 'png'])]
+            'jpg', 'jpeg', 'png'])],
+        default='services/default.jpg',
     )
 
     is_active = models.BooleanField(

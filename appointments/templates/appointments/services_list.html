@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="flex flex-col md:flex-row min-h-screen p-6">
+        <div class="w-full md:w-1/4 bg-gray-950 p-6 rounded-lg shadow-md mb-6 md:mb-0 md:mr-6">
+            <h2 class="text-blue-500 text-2xl font-semibold mb-6">Filtrar Serviços</h2>
+            
+            <div class="block md:hidden relative">
+                <button id="dropdownButton" class="text-blue-400 hover:text-blue-500 w-full text-left">
+                    Filtrar Serviços
+                </button>
+                
+                <div id="dropdownMenu" class=" list-none space-y-4 hidden mt-4 absolute left-0 w-full bg-gray-800 p-6 rounded-lg shadow-md z-10">
+                  
+                    <button id="closeDropdown" class="text-red-500 absolute top-4 right-4 text-2xl">&times;</button>
+                    
+                   
+                    <li><button onclick="filterServices('hair'); closeDropdown();" class="text-blue-400 hover:text-blue-500 w-full text-left">Corte de Cabelo</button></li>
+                    <li><button onclick="filterServices('beard'); closeDropdown();" class="text-blue-400 hover:text-blue-500 w-full text-left">Barba</button></li>
+                    <li><button onclick="filterServices('eyebrow'); closeDropdown();" class="text-blue-400 hover:text-blue-500 w-full text-left">Sobrancelha</button></li>
+                    <li><button onclick="filterServices('kids_haircut'); closeDropdown();" class="text-blue-400 hover:text-blue-500 w-full text-left">Corte Infantil</button></li>
+                    <li><button onclick="filterServices('hair_treatment'); closeDropdown();" class="text-blue-400 hover:text-blue-500 w-full text-left">Tratamento Capilar</button></li>
+                    <li><button onclick="filterServices('custom'); closeDropdown();" class="text-blue-400 hover:text-blue-500 w-full text-left">Personalizado</button></li>
+                    <li><button onclick="filterServices(''); closeDropdown();" class="text-blue-400 hover:text-blue-500 w-full text-left">Mostrar Todos</button></li>
+                </div>
+            </div>
+
+            <ul class="space-y-4 hidden md:block">
+                <li><button onclick="filterServices('hair')" class="text-blue-400 hover:text-blue-500">Corte de Cabelo</button></li>
+                <li><button onclick="filterServices('beard')" class="text-blue-400 hover:text-blue-500">Barba</button></li>
+                <li><button onclick="filterServices('eyebrow')" class="text-blue-400 hover:text-blue-500">Sobrancelha</button></li>
+                <li><button onclick="filterServices('kids_haircut')" class="text-blue-400 hover:text-blue-500">Corte Infantil</button></li>
+                <li><button onclick="filterServices('hair_treatment')" class="text-blue-400 hover:text-blue-500">Tratamento Capilar</button></li>
+                <li><button onclick="filterServices('custom')" class="text-blue-400 hover:text-blue-500">Personalizado</button></li>
+                <li><button onclick="filterServices('')" class="text-blue-400 hover:text-blue-500">Mostrar Todos</button></li>
+            </ul>
+        </div>
+
+        <div class="w-full md:w-3/4 bg-gray-950 p-6 rounded-lg shadow-md">
+            <h1 class="text-blue-500 text-3xl font-semibold mb-6">Nossos Serviços</h1>
+
+            <div id="servicesGrid" class=" bg-gray-950 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {% for object in obj.results %}
+                    {% if object.is_active %}
+                        <div class="service-item bg-gray-800 p-4 rounded-lg shadow-lg" data-service-type="{{ object.service_type }}">
+                            <img 
+                                src="{{ object.image }}" 
+                                alt="Foto do serviço" 
+                                class="w-full h-40 object-cover rounded-md mb-4">
+                            <h2 class="text-blue-400 text-xl font-semibold">{{ object.service_name }}</h2>
+                            <p class="text-gray-300 mt-2">{{ object.description }}</p>
+                            <p class="text-blue-500 font-bold mt-4">R$ {{ object.price }}</p>
+                            <p class="text-gray-400 mt-2">Duração: {{ object.duration }} minutos</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -56,6 +56,40 @@ const customServiceType = () => {
     }
 }
 
+ function filterServices(serviceType) {
+            const serviceItems = document.querySelectorAll('.service-item');
+            
+            if (serviceType === '') {
+                serviceItems.forEach(item => {
+                    item.style.display = 'block';  // Exibe todos os serviços
+                });
+            } else {
+                serviceItems.forEach(item => {
+                    if (item.getAttribute('data-service-type') === serviceType) {
+                        item.style.display = 'block';  // Exibe o serviço correspondente
+                    } else {
+                        item.style.display = 'none';   // Esconde os outros
+                    }
+                });
+            }
+        }
+
+        // Função para abrir o Dropdown no mobile
+        const dropdownButton = document.getElementById('dropdownButton');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        
+        dropdownButton.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');  // Alterna a visibilidade do menu
+        });
+
+        // Função para fechar o Dropdown
+        const closeDropdown = () => {
+            dropdownMenu.classList.add('hidden');  // Esconde o menu
+        };
+
+        // Adicionando o evento de fechamento quando clicar no botão de fechar
+        document.getElementById('closeDropdown').addEventListener('click', closeDropdown);
+
 serviceType.addEventListener('change', customServiceType);
 buttonThemeDesktop.addEventListener('click', toggleTheme);
 buttonThemeMobile.addEventListener('click', toggleTheme);

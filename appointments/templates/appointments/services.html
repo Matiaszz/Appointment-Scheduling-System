@@ -8,7 +8,7 @@
             
             <h3 class="text-blue-600 text-center text-xl font-semibold">Adicionar serviço</h3>
 
-            <form action="{% url 'appointments:index' %}" enctype="multipart/form-data">
+            <form method="POST" action="{% url 'appointments:services' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 
                 {{ service_form.as_p }}

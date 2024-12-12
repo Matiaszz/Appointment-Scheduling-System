@@ -38,11 +38,19 @@
             <p class="text-gray-200 leading-relaxed mb-6">
                 Se você está pronto para transformar seu visual ou apenas precisa de um retoque, estamos aqui para ajudar. Nossa equipe está sempre atualizada com as últimas tendências e técnicas para oferecer o melhor atendimento.
             </p>
-            <div class="mt-6">
-                <a href="#" class="bg-blue-600 text-white font-bold py-3 px-6 rounded hover:bg-blue-700 transition duration-300">
-                    Novo Agendamento
-                </a>
+            <div class='flex justify-center p-6 gap-6'>
+                <div class="mt-6">
+                    <a href="#" class="bg-blue-600 text-white font-bold py-3 px-6 rounded hover:bg-blue-700 transition duration-300">
+                        Novo Agendamento
+                    </a>
+                </div>
+                <div class="mt-6">
+                    <a href="{% url "appointments:services_list" %}" class="bg-blue-600 text-white font-bold py-3 px-6 rounded hover:bg-blue-700 transition duration-300">
+                        Ver Catálogo
+                    </a>
+                </div>
             </div>
+            
         </div>
 
         <div class="flex items-center justify-center">
