@@ -24,7 +24,8 @@ class CustomUser(AbstractUser):
     )
     email = models.EmailField(unique=True)
 
-    phone_number = models.CharField(max_length=11, default='')
+    phone_number = models.CharField(
+        max_length=11, default='', verbose_name='Número de telefone')
 
     def is_superuser_custom(self):
         return self.user_type == 'superuser'

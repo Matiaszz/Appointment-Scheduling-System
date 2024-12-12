@@ -12,11 +12,12 @@ import os
 load_dotenv('.../env/.env')
 
 
-class ServicesView(LoginRequiredMixin, View):
+class ServicesCreationView(LoginRequiredMixin, View):
     def get(self, request):
         if (
             (request.user.user_type != 'employee') and
-            (request.user.user_type != 'superuser')
+            (request.user.user_type != 'superuser') and
+            (request.user.user_type != 'manager')
         ):
             return redirect('appointments:index')
 

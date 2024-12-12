@@ -145,5 +145,26 @@ class EmployeeAuthView(View):
     template_name = 'appointments/employee_auth.html'
 
     def get(self, request):
+        if (
+            (request.user.user_type != 'manager') and
+            (request.user.user_type != 'superuser')
 
-        return render(request, self.template_name)
+        ):
+            return redirect('appointments:index')
+
+        context = {
+            'employee_form': EmployeeCreationForm()
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        employee_form = EmployeeCreationForm(request.POST, request.FILES)
+
+        if employee_form.is_valid():
+            employee_form.save()
+            messages.success(request, 'Funcionário registrado com sucesso.')
+
+            return redirect('appointments:auth_employee')
+
+        messages.error(request, 'Erro ao registrar funcionário.')
+        return redirect('appointments:auth_employee')
