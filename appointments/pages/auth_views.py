@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import View
 from django.contrib.auth import login, logout
 from django.contrib import messages
-from ..forms.account_forms import ClientCreationForm
+from ..forms.account_forms import ClientCreationForm, EmployeeCreationForm
 
 
 class AuthView(View):
@@ -139,3 +139,11 @@ def logout_view(request):
 
     logout(request)
     return redirect('appointments:authentication')
+
+
+class EmployeeAuthView(View):
+    template_name = 'appointments/employee_auth.html'
+
+    def get(self, request):
+
+        return render(request, self.template_name)

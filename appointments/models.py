@@ -7,6 +7,7 @@ from .utils.validations import validate_positive_price
 class CustomUser(AbstractUser):
     USER_TYPES = (
         ('superuser', 'Superuser'),
+        ('manager', 'Gerente'),
         ('employee', 'Funcionário'),
         ('client', 'Cliente'),
     )

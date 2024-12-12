@@ -14,7 +14,8 @@ class UniqueFieldValidationMixin:
     def clean_unique_field(self):
         if not self.model or not self.field_name:
             raise NotImplementedError(
-                'Defina o "model" e o "field_name" no mixin ou no formulário.'
+                'Define de "model" and '
+                '"field_name" in the form or in the mixin.'
             )
 
         value = self.cleaned_data.get(self.field_name)  # type: ignore
