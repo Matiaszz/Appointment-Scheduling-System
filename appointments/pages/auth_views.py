@@ -4,6 +4,7 @@ from django.views.generic import View
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from ..forms.account_forms import ClientCreationForm, EmployeeCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class AuthView(View):
@@ -141,7 +142,7 @@ def logout_view(request):
     return redirect('appointments:authentication')
 
 
-class EmployeeAuthView(View):
+class EmployeeAuthView(LoginRequiredMixin, View):
     template_name = 'appointments/employee_auth.html'
 
     def get(self, request):
