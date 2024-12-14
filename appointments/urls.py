@@ -1,4 +1,15 @@
+"""
+This module defines the URL routes for the 'appointments' app.
+The URLs map HTTP requests to the corresponding views.
 
+Parameters
+----------
+None
+
+Returns
+--------
+None
+"""
 from django.urls import path
 from appointments.views import index_view, our_services_view
 from appointments.pages.account_views import (
