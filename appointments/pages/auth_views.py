@@ -143,13 +143,51 @@ def logout_view(request):
 
 
 class EmployeeAuthView(LoginRequiredMixin, View):
+    """
+    EmployeeAuthView handles the authentication and registration of employees.
+
+    This view is accessible only to users with the 'manager' or 'superuser'
+    user type.
+    It allows managers to register new employees through a form.
+
+    Attributes
+    ----------
+    template_name : str
+        The template used to render the employee authentication page.
+
+    Methods
+    -------
+    get(request)
+        Renders the employee authentication page with the employee registration
+        form if the user has permission.
+
+    post(request)
+        Processes the registration of a new employee.
+    """
     template_name = 'appointments/employee_auth.html'
 
     def get(self, request):
+        """
+        Handles GET requests to render the employee authentication page.
+
+        Checks if the authenticated user is a manager or superuser.
+        If not, it redirects to the home page.
+
+        Parameters
+        ----------
+        request : HttpRequest
+            The request object containing metadata about the request.
+
+        Returns
+        -------
+        HttpResponse
+            - Renders the employee authentication template with the employee
+              registration form if the user has permission.
+            - Redirects to the home page if the user does not have permission.
+        """
         if (
             (request.user.user_type != 'manager') and
             (request.user.user_type != 'superuser')
-
         ):
             return redirect('appointments:index')
 
@@ -159,6 +197,25 @@ class EmployeeAuthView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
     def post(self, request):
+        """
+        Handles POST requests to process the registration of a new employee.
+
+        Receives the form data, validates it, and saves a new employee.
+        If the employee is successfully registered, a success message is
+        displayed.
+        Otherwise, an error message is shown.
+
+        Parameters
+        ----------
+        request : HttpRequest
+            The request object containing metadata about the request.
+
+        Returns
+        -------
+        HttpResponse
+            Redirects to the employee authentication page with a success
+            or error message based on the outcome of the registration process.
+        """
         employee_form = EmployeeCreationForm(request.POST, request.FILES)
 
         if employee_form.is_valid():

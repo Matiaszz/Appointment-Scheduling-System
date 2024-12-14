@@ -1,3 +1,18 @@
+"""
+Static pages, with only frontend.
+
+This module contains views for rendering static pages of the application.
+
+Parameters
+----------
+request : HttpRequest
+    The request object containing metadata about the request.
+
+Returns
+-------
+HttpResponse
+    Render the requested static page.
+"""
 from django.shortcuts import render
 app_name = 'appointments'
 
