@@ -1,7 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from ..models import Scheduling
-from datetime import time
+from datetime import time, datetime, timedelta
+from django.utils import timezone
 
 
 class ScheduleForm(forms.ModelForm):
@@ -16,10 +17,22 @@ class ScheduleForm(forms.ModelForm):
         date_time = self.cleaned_data.get('date_time')
 
         if date_time:
+            if timezone.is_naive(date_time):
+                date_time = timezone.make_aware(date_time)
+
+            if date_time < timezone.now():
+                raise ValidationError(
+                    'A data e hora do agendamento não podem ser no passado.'
+                )
             if not (time(7, 0) <= date_time.time() <= time(17, 0)):
                 raise ValidationError(
                     'O agendamento deve ser feito durante o horário comercial '
                     '(07:00 - 17:00).'
+                )
+            if date_time < timezone.now() + timezone.timedelta(minutes=30):
+                raise ValidationError(
+                    'O agendamento deve ser feito com pelo menos 30 minutos '
+                    'de antecedência.'
                 )
         return date_time
 
@@ -40,4 +53,19 @@ class ScheduleForm(forms.ModelForm):
                     'Já existe um agendamento para este serviço e horário. '
                     'Por favor, escolha outro horário.'
                 )
+
+            end_time = date_time + timedelta(minutes=service.duration)
+            conflicting_scheduling = Scheduling.objects.filter(
+                service=service,
+                date_time__lt=end_time,
+                date_time__gt=date_time,
+                status='active'
+            )
+
+            if conflicting_scheduling.exists():
+                raise ValidationError(
+                    'O horário solicitado conflita com outro agendamento ativo'
+                    ' para este serviço.'
+                )
+
         return cleaned_data
