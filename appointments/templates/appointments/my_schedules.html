@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if not items %}
+        <div class="text-center mt-10">
+            <p class="text-blue-400 text-xl font-semibold">Você ainda não possui agendamentos.</p>
+            <a href="{% url 'appointments:create_schedule' %}" class="btn bg-blue-500 text-white hover:bg-blue-700 rounded-lg px-6 py-2 mt-4 inline-block shadow-md">
+                Criar Agendamento
+            </a>
+        </div>
+    {% else %}
+        <div class="mt-10">
+            <div class="hidden md:block overflow-x-auto">
+                <table class="min-w-full bg-zinc-900 border border-gray-700 rounded-lg shadow-lg">
+                    <thead>
+                        <tr class="bg-zinc-800 text-white text-left">
+                            <th class="px-6 py-3 text-sm font-semibold">Data</th>
+                            <th class="px-6 py-3 text-sm font-semibold">Serviço</th>
+                            <th class="px-6 py-3 text-sm font-semibold">Status</th>
+                            <th class="px-6 py-3 text-sm font-semibold">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                            <tr class="border-t border-gray-700 hover:bg-zinc-800">
+                                <td class="px-6 py-4 text-gray-300">{{ item.get_formatted_date }}</td>
+                                <td class="px-6 py-4 text-gray-300">{{ item.service }}</td>
+                                <td class="px-6 py-4">
+                                    {% if item.status == 'active' %}
+                                        <span class="badge bg-green-500 text-white py-1 px-3 rounded-full">Confirmado</span>
+                                    {% elif item.status == 'canceled' %}
+                                        <span class="badge bg-red-500 text-white py-1 px-3 rounded-full">Cancelado</span>
+                                    {% elif item.status == 'completed' %}
+                                        <span class="badge bg-blue-400 text-white py-1 px-3 rounded-full">Concluído</span>
+                                    {% else %}
+                                        <span class="badge bg-yellow-400 text-white py-1 px-3 rounded-full">Pendente</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 space-x-2">
+                                    <a href="#" class="btn bg-indigo-600 text-white hover:bg-indigo-800 rounded-lg px-4 py-2 shadow-sm">
+                                        Ver
+                                    </a>
+                                    <a href="#" class="btn bg-yellow-500 text-white hover:bg-yellow-700 rounded-lg px-4 py-2 shadow-sm">
+                                        Editar
+                                    </a>
+                                    <form action="#" method="POST" class="inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn bg-red-600 text-white hover:bg-red-800 rounded-lg px-4 py-2 shadow-sm">
+                                            Excluir
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="md:hidden">
+                {% for item in items %}
+                    <div class="border border-gray-700 rounded-lg mb-4 bg-zinc-900">
+                        <div class="flex justify-between items-center p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                            <div class="text-gray-300">
+                                <strong>{{ item.get_formatted_date }}</strong> - {{ item.service }}
+                            </div>
+                            <div>
+                                <span class="badge 
+                                    {% if item.status == 'active' %}bg-green-500{% elif item.status == 'canceled' %}bg-red-500{% elif item.status == 'completed' %}bg-blue-400{% else %}bg-yellow-400{% endif %} 
+                                    text-white py-1 px-3 rounded-full">
+                                    {% if item.status == 'active' %}Confirmado{% elif item.status == 'canceled' %}Cancelado{% elif item.status == 'completed' %}Concluído{% else %}Pendente{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="hidden p-6 gap-6">
+                            <div class="flex space-x-4"> 
+                                <a href="#" class="btn bg-indigo-600 text-white hover:bg-indigo-800 rounded-lg px-6 py-3 shadow-sm"> 
+                                    Ver
+                                </a>
+                                <a href="#" class="btn bg-yellow-500 text-white hover:bg-yellow-700 rounded-lg px-6 py-3 shadow-sm"> 
+                                    Editar
+                                </a>
+                                <form action="#" method="POST" class="inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn bg-red-600 text-white hover:bg-red-800 rounded-lg px-6 py-3 shadow-sm"> 
+                                        Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

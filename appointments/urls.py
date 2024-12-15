@@ -11,7 +11,7 @@ Returns
 None
 """
 from django.urls import path
-from appointments.views import index_view, our_services_view
+from appointments.views import index_view, our_services_view, my_schedules_view
 from appointments.pages.account_views import (
     AccountView,
     update_profile_picture_view,
@@ -32,6 +32,7 @@ urlpatterns = [
     # Static views
     path('', index_view, name='index'),
     path('our_services/', our_services_view, name='our_services'),
+    path('schedules/', my_schedules_view, name='schedules'),
 
     # Auth views
     path('authentication/', AuthView.as_view(), name='authentication'),

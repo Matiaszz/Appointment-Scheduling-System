@@ -230,3 +230,6 @@ class Scheduling(models.Model):
 
     def __str__(self):
         return f'{self.client} - {self.service} em {self.date_time}'
+
+    def get_formatted_date(self):
+        return self.date_time.strftime('%d/%m/%Y')

@@ -27,7 +27,7 @@ def insert_into_calendar(
     service = get_calendar_service()
 
     event = {
-        'summary': 'Corte agendado',
+        'summary': f'Serviço agendado - {summary}',
         'description': description,
         'start': {
             'dateTime': start.isoformat(),

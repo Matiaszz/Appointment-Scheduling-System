@@ -16,8 +16,8 @@ class CreateSchedulingView(LoginRequiredMixin, View):
 
     def post(self, request):
         form = ScheduleForm(request.POST)
-        if form.is_valid():
 
+        if form.is_valid():
             scheduling = form.save(commit=False)
             scheduling.client = request.user
             scheduling.save()
