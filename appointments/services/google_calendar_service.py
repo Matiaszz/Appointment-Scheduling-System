@@ -1,3 +1,4 @@
+from datetime import datetime
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from pathlib import Path
@@ -17,3 +18,37 @@ def get_calendar_service():
     credentials = service_account.Credentials.from_service_account_file(
         CREDENTIALS_FILE, scopes=SCOPES)
     return build('calendar', 'v3', credentials=credentials)
+
+
+def insert_into_calendar(
+        summary: str, start: datetime, end: datetime, description: str
+
+):
+    service = get_calendar_service()
+
+    event = {
+        'summary': 'Corte agendado',
+        'description': description,
+        'start': {
+            'dateTime': start.isoformat(),
+            'timeZone': 'America/Sao_Paulo',
+        },
+        'end': {
+            'dateTime': end.isoformat(),
+            'timeZone': 'America/Sao_Paulo',
+        },
+    }
+
+    try:
+        created_event = service.events().insert(
+            calendarId=CALENDAR_ID, body=event
+        ).execute()
+
+        print(
+            f"Evento criado com sucesso! Link: {created_event.get('htmlLink')}"
+        )
+        return True
+
+    except Exception as e:
+        print(f"Erro ao criar evento: {e}")
+        return False
