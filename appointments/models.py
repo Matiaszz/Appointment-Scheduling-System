@@ -3,6 +3,11 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import FileExtensionValidator
 from .utils.validations import validate_positive_price
+from .utils.others import get_env
+import os
+get_env()
+
+calendar_id = os.getenv('CALENDAR_ID')
 
 
 class CustomUser (AbstractUser):
@@ -74,38 +79,38 @@ class CustomUser (AbstractUser):
     phone_number = models.CharField(
         max_length=11, default='', verbose_name='Número de telefone')
 
-    def is_superuser_custom(self):
-        """
-        Checks if the user is a superuser.
+    # def is_superuser_custom(self):
+    #     """
+    #     Checks if the user is a superuser.
 
-        Returns
-        -------
-        bool
-            True if the user is a superuser, False otherwise.
-        """
-        return self.user_type == 'superuser'
+    #     Returns
+    #     -------
+    #     bool
+    #         True if the user is a superuser, False otherwise.
+    #     """
+    #     return self.user_type == 'superuser'
 
-    def is_employee(self):
-        """
-        Checks if the user is an employee.
+    # def is_employee(self):
+    #     """
+    #     Checks if the user is an employee.
 
-        Returns
-        -------
-        bool
-            True if the user is an employee, False otherwise.
-        """
-        return self.user_type == 'employee'
+    #     Returns
+    #     -------
+    #     bool
+    #         True if the user is an employee, False otherwise.
+    #     """
+    #     return self.user_type == 'employee'
 
-    def is_cliente(self):
-        """
-        Checks if the user is a client.
+    # def is_cliente(self):
+    #     """
+    #     Checks if the user is a client.
 
-        Returns
-        -------
-        bool
-            True if the user is a client, False otherwise.
-        """
-        return self.user_type == 'client'
+    #     Returns
+    #     -------
+    #     bool
+    #         True if the user is a client, False otherwise.
+    #     """
+    #     return self.user_type == 'client'
 
 
 class BarberService(models.Model):
@@ -219,7 +224,9 @@ class Scheduling(models.Model):
                              help_text='Observações sobre o agendamento')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    calendar_event_id = models.CharField(max_length=255, blank=True, null=True)
+    calendar_event_id = models.CharField(
+        max_length=255, blank=True, null=True,
+        default=calendar_id)
 
     def __str__(self):
         return f'{self.client} - {self.service} em {self.date_time}'
