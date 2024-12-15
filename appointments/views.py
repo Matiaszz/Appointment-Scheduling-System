@@ -14,7 +14,6 @@ HttpResponse
     Render the requested static page.
 """
 from django.shortcuts import render
-app_name = 'appointments'
 
 
 def index_view(request):

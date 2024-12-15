@@ -17,8 +17,15 @@ from appointments.pages.account_views import (
     update_profile_picture_view,
     UserProfileUpdateView
 )
-from appointments.pages.barber_views import ServicesCreationView, ServicesListView
-from appointments.pages.auth_views import AuthView, logout_view, EmployeeAuthView
+from appointments.pages.barber_views import (
+    ServicesCreationView, ServicesListView)
+from appointments.pages.auth_views import (
+    AuthView, logout_view, EmployeeAuthView)
+
+from appointments.pages.scheduling_views import (
+    CreateSchedulingView
+)
+
 app_name = 'appointments'
 
 urlpatterns = [
@@ -42,5 +49,10 @@ urlpatterns = [
     # Barber views
     path('services/create/', ServicesCreationView.as_view(), name='services'),
     path('services/list/', ServicesListView.as_view(), name='services_list'),
+
+    # Schedule views
+    path('schedule/create', CreateSchedulingView.as_view(),
+         name='create_schedule')
+
 
 ]

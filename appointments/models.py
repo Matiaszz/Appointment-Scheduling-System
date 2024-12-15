@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import FileExtensionValidator
@@ -192,3 +193,33 @@ class BarberService(models.Model):
             A string in the format 'service_name - R$ price'.
         """
         return f'{self.service_name} - R$ {self.price}'
+
+
+class Scheduling(models.Model):
+    STATUS_CHOICES = [
+        ('active', 'Ativo'),
+        ('canceled', 'Cancelado'),
+        ('completed', 'Concluído'),
+    ]
+
+    client = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    service = models.ForeignKey(
+        'BarberService', on_delete=models.CASCADE, verbose_name='Serviço')
+    date_time = models.DateTimeField(
+        verbose_name='Data e hora do agendamento',
+        help_text=('O agendamento deve ser feito durante o horário comercial'
+                   ' (07: 00 - 17: 00)')
+    )
+    status = models.CharField(
+        max_length=10, choices=STATUS_CHOICES, default='active')
+
+    notes = models.TextField(blank=True, null=True,
+                             verbose_name='Notas',
+                             help_text='Observações sobre o agendamento')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    calendar_event_id = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.client} - {self.service} em {self.date_time}'

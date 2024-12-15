@@ -25,10 +25,12 @@ media/
 staticfiles/
 
 # Secrets
+secrets
 *.env
 .env.*
 venv
 .venv
+
 
 # Compiled migrations (optional, migrations themselves are typically versioned)
 **/migrations/*.pyc
