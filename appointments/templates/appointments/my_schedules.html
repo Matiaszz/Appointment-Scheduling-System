@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if not items %}
+    {% if not object_list %}
         <div class="text-center block p-16">
             <p class="text-blue-400 text-xl font-semibold">Você ainda não possui agendamentos.</p>
             <a href="{% url 'appointments:create_schedule' %}" class="btn bg-blue-500 text-white hover:bg-blue-700 rounded-lg px-6 py-2 mt-4 inline-block shadow-md">
@@ -9,11 +9,19 @@
             </a>
         </div>
     {% else %}
+        <div class="flex justify-end pt-8 pr-8 mb-6">
+            <a href="{% url 'appointments:create_schedule' %}" class="btn bg-green-500 text-white hover:bg-green-700 rounded-lg px-6 py-2">
+                Criar Novo Agendamento
+            </a>
+        </div>
+    
+
         <div class="mt-10">
             <div class="hidden md:block overflow-x-auto">
                 <table class="min-w-full bg-zinc-900 border border-gray-700 rounded-lg shadow-lg">
                     <thead>
                         <tr class="bg-zinc-800 text-white text-left">
+                            <th class="px-6 py-3 text-sm font-semibold">Número</th>
                             <th class="px-6 py-3 text-sm font-semibold">Data</th>
                             <th class="px-6 py-3 text-sm font-semibold">Serviço</th>
                             <th class="px-6 py-3 text-sm font-semibold">Status</th>
@@ -21,10 +29,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in items %}
+                        {% for item in object_list %}
                             <tr class="border-t border-gray-700 hover:bg-zinc-800">
-                                <td class="px-6 py-4 text-gray-300">{{ item.get_formatted_date }}</td>
-                                <td class="px-6 py-4 text-gray-300">{{ item.service }}</td>
+                                <td class="px-6 py-4 text-gray-300">{{ item.id }}</td>
+                                <td class="px-6 py-4 text-gray-300">{{ item.formatted_date }}</td>
+                                <td class="px-6 py-4 text-gray-300">{{ item.service_name }}</td>
                                 <td class="px-6 py-4">
                                     {% if item.status == 'active' %}
                                         <span class="badge bg-green-500 text-white py-1 px-3 rounded-full">Confirmado</span>
@@ -38,15 +47,15 @@
                                 </td>
                                 <td class="px-6 py-4 space-x-2">
                                     <a href="#" class="btn bg-indigo-600 text-white hover:bg-indigo-800 rounded-lg px-4 py-2 shadow-sm">
-                                        Ver
+                                        <i class="fas fa-search h-5 w-5"></i>
                                     </a>
                                     <a href="#" class="btn bg-yellow-500 text-white hover:bg-yellow-700 rounded-lg px-4 py-2 shadow-sm">
-                                        Editar
+                                        <i class="fas fa-pencil-alt h-5 w-5"></i>
                                     </a>
                                     <form action="#" method="POST" class="inline">
                                         {% csrf_token %}
                                         <button type="submit" class="btn bg-red-600 text-white hover:bg-red-800 rounded-lg px-4 py-2 shadow-sm">
-                                            Excluir
+                                            <i class="fas fa-trash h-5 w-5"></i>
                                         </button>
                                     </form>
                                 </td>
@@ -57,11 +66,14 @@
             </div>
 
             <div class="md:hidden">
-                {% for item in items %}
+                {% for item in object_list %}
                     <div class="border border-gray-700 rounded-lg mb-4 bg-zinc-900">
                         <div class="flex justify-between items-center p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
                             <div class="text-gray-300">
-                                <strong>{{ item.get_formatted_date }}</strong> - {{ item.service }}
+                                <strong>{{ item.id }}</strong>
+                            </div>
+                            <div class="text-gray-300">
+                                <strong>{{ item.formatted_date }}</strong> - {{ item.service_name }}
                             </div>
                             <div>
                                 <span class="badge 
@@ -72,17 +84,17 @@
                             </div>
                         </div>
                         <div class="hidden p-6 gap-6">
-                            <div class="flex space-x-4"> 
-                                <a href="#" class="btn bg-indigo-600 text-white hover:bg-indigo-800 rounded-lg px-6 py-3 shadow-sm"> 
-                                    Ver
+                            <div class="flex space-x-4">
+                                <a href="#" class="btn bg-indigo-600 text-white hover:bg-indigo-800 rounded-lg px-6 py-3 shadow-sm">
+                                    <i class="fas fa-search h-5 w-5"></i>
                                 </a>
-                                <a href="#" class="btn bg-yellow-500 text-white hover:bg-yellow-700 rounded-lg px-6 py-3 shadow-sm"> 
-                                    Editar
+                                <a href="#" class="btn bg-yellow-500 text-white hover:bg-yellow-700 rounded-lg px-6 py-3 shadow-sm">
+                                    <i class="fas fa-pencil-alt h-5 w-5"></i>
                                 </a>
                                 <form action="#" method="POST" class="inline">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn bg-red-600 text-white hover:bg-red-800 rounded-lg px-6 py-3 shadow-sm"> 
-                                        Excluir
+                                    <button type="submit" class="btn bg-red-600 text-white hover:bg-red-800 rounded-lg px-6 py-3 shadow-sm">
+                                        <i class="fas fa-trash h-5 w-5"></i>
                                     </button>
                                 </form>
                             </div>

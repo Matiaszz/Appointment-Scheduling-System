@@ -1,0 +1,54 @@
+{% if is_paginated %}
+<div class="pagination mt-8 flex justify-center p-10">
+    <nav aria-label="Page navigation">
+        <ul class="inline-flex items-center space-x-2">
+            {% if page_obj.has_previous %}
+            <li>
+                <a href="?page=1" 
+                   class="px-4 py-2 rounded-lg bg-zinc-800 text-white hover:bg-zinc-700">
+                    &laquo;
+                </a>
+            </li>
+            <li>
+                <a href="?page={{ page_obj.previous_page_number }}" 
+                   class="px-4 py-2 rounded-lg bg-zinc-800 text-white hover:bg-zinc-700">
+                    &lsaquo;
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li>
+                    <span class="px-4 py-2 rounded-lg bg-blue-500 text-white cursor-pointer">
+                        {{ num }}
+                    </span>
+                </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li>
+                    <a href="?page={{ num }}" 
+                       class="px-4 py-2 rounded-lg bg-zinc-800 text-white hover:bg-zinc-700">
+                        {{ num }}
+                    </a>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li>
+                <a href="?page={{ page_obj.next_page_number }}" 
+                   class="px-4 py-2 rounded-lg bg-zinc-800 text-white hover:bg-zinc-700">
+                    &rsaquo;
+                </a>
+            </li>
+            <li>
+                <a href="?page={{ page_obj.paginator.num_pages }}" 
+                   class="px-4 py-2 rounded-lg bg-zinc-800 text-white hover:bg-zinc-700">
+                    &raquo;
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}

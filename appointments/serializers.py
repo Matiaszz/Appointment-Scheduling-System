@@ -35,6 +35,10 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class ScheduleSerializer(serializers.ModelSerializer):
+    service_name = serializers.CharField(source='service.service_name')
+    formatted_date = serializers.CharField(source='get_formatted_date')
+
     class Meta:
         model = Scheduling
-        fields = '__all__'
+        fields = ['id', 'client', 'service_name', 'formatted_date',
+                  'status', 'notes', 'created_at', 'updated_at']

@@ -29,7 +29,7 @@ class CreateSchedulingView(LoginRequiredMixin, View):
             scheduling.client = request.user
             scheduling.save()
             messages.success(request, 'Agendado com sucesso.')
-            return redirect('appointments:account')
+            return redirect('appointments:schedules')
 
         messages.error(request, 'Não foi possível agendar')
         return render(request, 'appointments/create_scheduling.html',
@@ -38,43 +38,44 @@ class CreateSchedulingView(LoginRequiredMixin, View):
 
 class ReadSchedulingView(LoginRequiredMixin, ListView):
     template_name = 'appointments/my_schedules.html'
+    paginate_by = 10
 
-    def get(self, request):
+    def get_queryset(self):
         """
-        Handles GET requests to fetch and display the list of schedules.
-
-        Retrieves the services from an external API and renders them in the
-        services list template.
-
-        Parameters
-        ----------
-        request : HttpRequest
-            The request object containing metadata about the request.
-
-        Returns
-        -------
-        HttpResponse
-            Renders the services list template with the fetched services.
+        Retrieves the schedules from an external API and filters them by
+        the logged-in user.
         """
-        api_url = str(os.getenv('SCHEDULES_API_URL'))
-        response = requests.get(api_url)
+        api_url = os.getenv('SCHEDULES_API_URL')
 
-        if response.status_code == 200:
-            user_id = request.user.id
+        if not api_url:
+            messages.error(self.request, 'URL da API não está configurada.')
+            return []
+
+        try:
+            response = requests.get(api_url)
+            response.raise_for_status()
             schedules = response.json().get('results', [])
+
+            user_id = self.request.user.pk
             filtered_schedules = [
                 item for item in schedules if item['client'] == user_id
             ]
+            return filtered_schedules
 
-            context = {
-                'items': filtered_schedules,
-            }
-            return render(self.request, self.template_name, context)
+        except requests.exceptions.RequestException as e:
+            messages.error(
+                self.request, f'Erro ao pegar informações: {str(e)}')
+            return []
 
-        messages.error(request, 'Erro ao carregar os agendamentos.')
-        return redirect('appointments:index')
+    def get(self, *args, **kwargs):
+        """
+        Handles GET requests to fetch and display the list of schedules.
+        """
+        self.object_list = self.get_queryset()
+        context = self.get_context_data(object_list=self.object_list)
+        return self.render_to_response(context)
 
 
 class ScheduleViewSet(viewsets.ModelViewSet):
-    queryset = Scheduling.objects.all()
+    queryset = Scheduling.objects.all().order_by('-pk')
     serializer_class = ScheduleSerializer
