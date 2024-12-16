@@ -1,12 +1,12 @@
-from ..models import CustomUser
-from ..services.user_services import update_profile_picture
-from django.views.generic.edit import UpdateView
-from django.shortcuts import redirect, render
-from django.views.generic import View
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import messages
 from django.forms import ValidationError
+from django.shortcuts import redirect, render
+from django.views.generic import View
+from django.views.generic.edit import UpdateView
+from ..models import CustomUser
+from ..services.user_services import update_profile_picture
 from ..utils.validations import UniqueFieldValidationMixin
 
 

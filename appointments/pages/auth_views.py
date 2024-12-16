@@ -1,10 +1,10 @@
-from django.shortcuts import redirect, render
-from django.contrib.auth.forms import AuthenticationForm
-from django.views.generic import View
-from django.contrib.auth import login, logout
 from django.contrib import messages
-from ..forms.account_forms import ClientCreationForm, EmployeeCreationForm
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, render
+from django.views.generic import View
+from ..forms.account_forms import ClientCreationForm, EmployeeCreationForm
 
 
 class AuthView(View):

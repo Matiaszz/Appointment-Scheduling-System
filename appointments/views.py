@@ -14,8 +14,8 @@ HttpResponse
     Render the requested static page.
 """
 from django.shortcuts import render
-from .models import Scheduling
 from django.contrib.auth.decorators import login_required
+from .models import Scheduling
 
 
 def index_view(request):

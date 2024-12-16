@@ -11,20 +11,23 @@ Returns
 None
 """
 from django.urls import path
-from appointments.views import index_view, our_services_view, my_schedules_view
+
 from appointments.pages.account_views import (
     AccountView,
+    UserProfileUpdateView,
     update_profile_picture_view,
-    UserProfileUpdateView
+)
+from appointments.pages.auth_views import (
+    AuthView,
+    EmployeeAuthView,
+    logout_view,
 )
 from appointments.pages.barber_views import (
-    ServicesCreationView, ServicesListView)
-from appointments.pages.auth_views import (
-    AuthView, logout_view, EmployeeAuthView)
-
-from appointments.pages.scheduling_views import (
-    CreateSchedulingView
+    ServicesCreationView,
+    ServicesListView,
 )
+from appointments.pages.scheduling_views import CreateSchedulingView
+from appointments.views import index_view, my_schedules_view, our_services_view
 
 app_name = 'appointments'
 

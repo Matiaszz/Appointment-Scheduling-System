@@ -1,13 +1,14 @@
-from django.shortcuts import redirect, render
-from django.views.generic import View, ListView
+import os
+import requests
+from dotenv import load_dotenv
+from rest_framework import viewsets
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, render
+from django.views.generic import ListView, View
 from ..forms.barber_forms import ServiceForm
 from ..models import BarberService
-from rest_framework import viewsets
 from ..serializers import ServiceSerializer
-from dotenv import load_dotenv
-import requests
-import os
+
 
 load_dotenv('.../env/.env')
 

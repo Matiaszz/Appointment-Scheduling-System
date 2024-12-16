@@ -1,8 +1,8 @@
-from django.shortcuts import redirect, render
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, render
 from django.views.generic import View
 from ..forms.scheduling_forms import ScheduleForm
-from django.contrib import messages
 
 
 class CreateSchedulingView(LoginRequiredMixin, View):

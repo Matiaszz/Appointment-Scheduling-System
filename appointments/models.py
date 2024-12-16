@@ -1,10 +1,11 @@
+import os
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.db import models
 from django.core.validators import FileExtensionValidator
-from .utils.validations import validate_positive_price
+from django.db import models
 from .utils.others import get_env
-import os
+from .utils.validations import validate_positive_price
+
 get_env()
 
 calendar_id = os.getenv('CALENDAR_ID')
