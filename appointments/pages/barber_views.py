@@ -48,11 +48,7 @@ class ServicesCreationView(LoginRequiredMixin, View):
               if the user has permission.
             - Redirects to the home page if the user does not have permission.
         """
-        if (
-            (request.user.user_type != 'employee') and
-            (request.user.user_type != 'superuser') and
-            (request.user.user_type != 'manager')
-        ):
+        if request.user.is_client():
             return redirect('appointments:index')
 
         service_form = ServiceForm()

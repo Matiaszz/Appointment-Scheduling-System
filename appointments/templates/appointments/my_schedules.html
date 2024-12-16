@@ -2,7 +2,7 @@
 
 {% block content %}
     {% if not items %}
-        <div class="text-center mt-10">
+        <div class="text-center block p-16">
             <p class="text-blue-400 text-xl font-semibold">Você ainda não possui agendamentos.</p>
             <a href="{% url 'appointments:create_schedule' %}" class="btn bg-blue-500 text-white hover:bg-blue-700 rounded-lg px-6 py-2 mt-4 inline-block shadow-md">
                 Criar Agendamento

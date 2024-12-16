@@ -185,10 +185,7 @@ class EmployeeAuthView(LoginRequiredMixin, View):
               registration form if the user has permission.
             - Redirects to the home page if the user does not have permission.
         """
-        if (
-            (request.user.user_type != 'manager') and
-            (request.user.user_type != 'superuser')
-        ):
+        if request.user.is_client() or request.user.is_employee():
             return redirect('appointments:index')
 
         context = {
