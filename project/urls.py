@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from appointments.pages.barber_views import ServiceViewSet
+from appointments.pages.scheduling_views import ScheduleViewSet
 from rest_framework.routers import DefaultRouter
 from django.contrib import admin
 from django.urls import path, include
@@ -23,6 +24,7 @@ from django.conf.urls.static import static
 
 router = DefaultRouter()
 router.register(r'services', ServiceViewSet, basename='services')
+router.register(r'schedules', ScheduleViewSet, basename='schedules')
 
 urlpatterns = [
     path('', include('appointments.urls')),

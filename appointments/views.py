@@ -14,8 +14,6 @@ HttpResponse
     Render the requested static page.
 """
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from .models import Scheduling
 
 
 def index_view(request):
@@ -24,12 +22,3 @@ def index_view(request):
 
 def our_services_view(request):
     return render(request, 'appointments/our_services.html')
-
-
-@login_required
-def my_schedules_view(request):
-    items = Scheduling.objects.filter(client=request.user)
-    context = {
-        'items': items
-    }
-    return render(request, 'appointments/my_schedules.html', context)

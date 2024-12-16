@@ -1,6 +1,5 @@
 import os
 import requests
-from dotenv import load_dotenv
 from rest_framework import viewsets
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
@@ -8,9 +7,6 @@ from django.views.generic import ListView, View
 from ..forms.barber_forms import ServiceForm
 from ..models import BarberService
 from ..serializers import ServiceSerializer
-
-
-load_dotenv('.../env/.env')
 
 
 class ServicesCreationView(LoginRequiredMixin, View):
@@ -134,7 +130,7 @@ class ServicesListView(LoginRequiredMixin, ListView):
         HttpResponse
             Renders the services list template with the fetched services.
         """
-        api_url = str(os.getenv('API_URL'))
+        api_url = str(os.getenv('SERVICES_API_URL'))
 
         response = requests.get(api_url)
         services = response.json()

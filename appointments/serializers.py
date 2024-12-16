@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import BarberService
+from .models import BarberService, Scheduling
 
 
 class ServiceSerializer(serializers.ModelSerializer):
@@ -31,4 +31,10 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BarberService
+        fields = '__all__'
+
+
+class ScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Scheduling
         fields = '__all__'
