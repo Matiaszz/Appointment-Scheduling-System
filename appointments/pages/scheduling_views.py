@@ -1,10 +1,9 @@
-from django.shortcuts import get_object_or_404
 import os
 import requests
 from rest_framework import viewsets
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import View, ListView
 from django.db import transaction
 from django.utils import timezone
@@ -32,7 +31,24 @@ class CreateSchedulingView(LoginRequiredMixin, View):
         if form.is_valid():
             scheduling = form.save(commit=False)
             scheduling.client = request.user
+            start_time = scheduling.date_time
+            end_time = start_time + \
+                timezone.timedelta(minutes=scheduling.service.duration)
+
+            created_event = insert_into_calendar(
+                summary=scheduling.service.service_name,
+                start=start_time,
+                end=end_time,
+                description=form.cleaned_data.get('notes', '')
+            )
+
+            if not created_event:
+                raise Exception(
+                    'Erro ao inserir o agendamento na Agenda.')
+
+            scheduling.calendar_event_id = created_event['id']
             scheduling.save()
+
             messages.success(request, 'Agendado com sucesso.')
             return redirect('appointments:schedules')
 
@@ -88,16 +104,22 @@ class UpdateScheduleView(LoginRequiredMixin, View):
 
         existing_schedule = get_object_or_404(Scheduling, pk=schedule_id)
 
-        if existing_schedule.client != request.user:
+        if ((existing_schedule.client != request.user) and
+                request.user.is_client()):
+
             return render(request, '404.html', status=404)
 
+        new_date_time = existing_schedule.date_time - timezone.timedelta(
+            hours=3)
+        formatted_date_time = new_date_time.strftime('%Y-%m-%dT%H:%M')
         initial_data = {
             'service': existing_schedule.service,
-            'date_time': existing_schedule.date_time.strftime(
-                '%Y-%m-%dT%H:%M'),
+            'date_time': formatted_date_time,
             'notes': existing_schedule.notes,
         }
+
         form = ScheduleForm(initial=initial_data)
+
         return render(request, self.template_name,
                       {'form': form, 'schedule_id': schedule_id})
 
@@ -114,7 +136,6 @@ class UpdateScheduleView(LoginRequiredMixin, View):
                             existing_schedule.calendar_event_id)
 
                     scheduling = form.save(commit=False)
-                    scheduling.client = request.user
                     scheduling.save()
 
                     start_time = scheduling.date_time
@@ -151,7 +172,9 @@ class DeleteScheduleView(LoginRequiredMixin, View):
     def post(self, request, schedule_id):
         existing_schedule = get_object_or_404(Scheduling, pk=schedule_id)
 
-        if existing_schedule.client != request.user:
+        if ((existing_schedule.client != request.user) and
+                request.user.is_client()):
+
             return render(request, '404.html', status=404)
 
         try:
