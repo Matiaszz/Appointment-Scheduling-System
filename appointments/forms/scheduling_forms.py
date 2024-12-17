@@ -3,10 +3,15 @@ from django.core.exceptions import ValidationError
 from ..models import Scheduling
 from datetime import time, timedelta
 from django.utils import timezone
-from ..services.google_calendar_service import insert_into_calendar
 
 
 class ScheduleForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.instance_pk = kwargs['instance'].pk if (
+            'instance' in kwargs) and (kwargs['instance']) else None
+
+        super().__init__(*args, **kwargs)
+
     class Meta:
         model = Scheduling
         fields = ['service', 'date_time', 'notes']
@@ -46,18 +51,6 @@ class ScheduleForm(forms.ModelForm):
         date_time = cleaned_data.get('date_time')
 
         if service and date_time:
-            existing_scheduling = Scheduling.objects.filter(
-                service=service,
-                date_time=date_time,
-                status='active'
-            )
-
-            if existing_scheduling.exists():
-                raise ValidationError(
-                    'Já existe um agendamento para este serviço e horário. '
-                    'Por favor, escolha outro horário.'
-                )
-
             end_time = date_time + timedelta(minutes=service.duration)
 
             conflicting_scheduling = Scheduling.objects.filter(
@@ -67,20 +60,14 @@ class ScheduleForm(forms.ModelForm):
                 status='active'
             )
 
+            if self.instance_pk:
+                conflicting_scheduling = conflicting_scheduling.exclude(
+                    pk=self.instance_pk)
+
             if conflicting_scheduling.exists():
                 raise ValidationError(
                     'O horário solicitado conflita com outro agendamento ativo'
                     ' para este serviço.'
-                )
-
-            if not insert_into_calendar(
-                summary=service.service_name,
-                start=date_time,
-                end=end_time,
-                description=cleaned_data.get('notes', '')
-            ):
-                raise ValidationError(
-                    'Erro ao inserir o agendamento no calendário.'
                 )
 
         return cleaned_data
