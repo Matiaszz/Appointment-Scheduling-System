@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import FileExtensionValidator
@@ -223,8 +224,7 @@ class Scheduling(models.Model):
     notes = models.TextField(blank=True, null=True,
                              verbose_name='Notas',
                              help_text='Observações sobre o agendamento')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+
     calendar_event_id = models.CharField(
         max_length=255, blank=True, null=True,
         default=calendar_id)
@@ -233,4 +233,5 @@ class Scheduling(models.Model):
         return f'{self.client} - {self.service} em {self.date_time}'
 
     def get_formatted_date(self):
-        return self.date_time.strftime('%d/%m/%Y')
+        return (
+            self.date_time - timedelta(hours=3)).strftime('%d/%m/%Y - %H:%M')
