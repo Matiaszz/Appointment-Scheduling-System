@@ -14,13 +14,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.shortcuts import render
+from django.conf.urls import handler404
 from appointments.pages.barber_views import ServiceViewSet
 from appointments.pages.scheduling_views import ScheduleViewSet
+from appointments.views import custom_404_view
 from rest_framework.routers import DefaultRouter
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.defaults import page_not_found
+
+handler404 = custom_404_view
+
 
 router = DefaultRouter()
 router.register(r'services', ServiceViewSet, basename='services')
@@ -30,6 +37,7 @@ urlpatterns = [
     path('', include('appointments.urls')),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('404/', lambda request: page_not_found(request, exception=None))
 ]
 if settings.DEBUG:
     urlpatterns += static(

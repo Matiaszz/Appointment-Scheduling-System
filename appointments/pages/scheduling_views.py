@@ -147,6 +147,29 @@ class UpdateScheduleView(LoginRequiredMixin, View):
                       {'form': form, 'schedule_id': schedule_id})
 
 
+class DeleteScheduleView(LoginRequiredMixin, View):
+    def post(self, request, schedule_id):
+        existing_schedule = get_object_or_404(Scheduling, pk=schedule_id)
+
+        if existing_schedule.client != request.user:
+            return render(request, '404.html', status=404)
+
+        try:
+            with transaction.atomic():
+
+                if existing_schedule.calendar_event_id:
+                    delete_from_calendar(
+                        existing_schedule.calendar_event_id)
+
+                existing_schedule.delete()
+                messages.success(request, 'Agendamento deletado')
+
+                return redirect('appointments:schedules')
+
+        except Exception as e:
+            messages.error(request, f'Um erro ocorreu: {e}')
+
+
 class ScheduleViewSet(viewsets.ModelViewSet):
     queryset = Scheduling.objects.all().order_by('-pk')
     serializer_class = ScheduleSerializer

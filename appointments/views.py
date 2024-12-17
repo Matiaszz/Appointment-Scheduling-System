@@ -22,3 +22,7 @@ def index_view(request):
 
 def our_services_view(request):
     return render(request, 'appointments/our_services.html')
+
+
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)

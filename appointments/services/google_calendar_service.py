@@ -53,6 +53,6 @@ def delete_from_calendar(event_id):
         service.events().delete(
             calendarId=CALENDAR_ID, eventId=event_id).execute()
 
-        print(f"Evento {event_id} excluído com sucesso.")
+        print(f"{event_id} event has been deleted successfully.")
     except Exception as e:
-        print(f"Erro ao excluir evento: {e}")
+        print(f"Error in delete operation: {e}")

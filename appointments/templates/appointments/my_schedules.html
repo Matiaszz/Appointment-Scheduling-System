@@ -52,7 +52,7 @@
                                     <a href="{% url "appointments:update_schedule"  schedule_id=item.id %}" class="btn bg-yellow-500 text-white hover:bg-yellow-700 rounded-lg px-4 py-2 shadow-sm">
                                         <i class="fas fa-pencil-alt h-5 w-5"></i>
                                     </a>
-                                    <form action="#" method="POST" class="inline">
+                                    <form action="{% url "appointments:delete_schedule" schedule_id=item.id %}" method="POST" class="inline">
                                         {% csrf_token %}
                                         <button type="submit" class="btn bg-red-600 text-white hover:bg-red-800 rounded-lg px-4 py-2 shadow-sm">
                                             <i class="fas fa-trash h-5 w-5"></i>
@@ -88,10 +88,10 @@
                                 <a href="#" class="btn bg-indigo-600 text-white hover:bg-indigo-800 rounded-lg px-6 py-3 shadow-sm">
                                     <i class="fas fa-search h-5 w-5"></i>
                                 </a>
-                                <a href="#" class="btn bg-yellow-500 text-white hover:bg-yellow-700 rounded-lg px-6 py-3 shadow-sm">
+                                <a href="{% url "appointments:update_schedule"  schedule_id=item.id %}" class="btn bg-yellow-500 text-white hover:bg-yellow-700 rounded-lg px-4 py-2 shadow-sm">
                                     <i class="fas fa-pencil-alt h-5 w-5"></i>
                                 </a>
-                                <form action="#" method="POST" class="inline">
+                                <form action="{% url "appointments:delete_schedule" schedule_id=item.id %}" method="POST" class="inline">
                                     {% csrf_token %}
                                     <button type="submit" class="btn bg-red-600 text-white hover:bg-red-800 rounded-lg px-6 py-3 shadow-sm">
                                         <i class="fas fa-trash h-5 w-5"></i>

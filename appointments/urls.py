@@ -29,7 +29,8 @@ from appointments.pages.barber_views import (
 from appointments.pages.scheduling_views import (
     CreateSchedulingView,
     ReadSchedulingView,
-    UpdateScheduleView
+    UpdateScheduleView,
+    DeleteScheduleView
 )
 from appointments.views import index_view, our_services_view
 
@@ -64,6 +65,8 @@ urlpatterns = [
          name='create_schedule'),
     path('schedule/update/<int:schedule_id>/', UpdateScheduleView.as_view(),
          name='update_schedule'
+         ),
+    path('schedule/delete/<int:schedule_id>/', DeleteScheduleView.as_view(),
+         name='delete_schedule'
          )
-
 ]
