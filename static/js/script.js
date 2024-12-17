@@ -18,12 +18,12 @@ const toggleTheme = () => {
         switchTheme.classList.add('bg-gray-100');
         switchTheme.classList.add('text-black');
         return;
-    } 
+    }
     switchTheme.classList.remove('bg-gray-100');
     switchTheme.classList.remove('text-black');
     switchTheme.classList.add('bg-zinc-900');
     switchTheme.classList.add('text-white');
-    
+
 }
 
 const customServiceType = () => {
@@ -41,9 +41,9 @@ const customServiceType = () => {
         label.className = 'text-gray-200 font-semibold mt-4';
 
         if (!document.getElementById('custom_service')) {
-            customServiceDiv.innerHTML = '';  
+            customServiceDiv.innerHTML = '';
             customServiceDiv.classList.remove('hidden');
-            customServiceDiv.classList.add('space-y-4'); 
+            customServiceDiv.classList.add('space-y-4');
 
             customServiceDiv.appendChild(label);
             customServiceDiv.appendChild(input);
@@ -51,41 +51,41 @@ const customServiceType = () => {
 
         customServiceDiv.classList.remove('hidden');
     } else {
-        customServiceDiv.innerHTML = '';  
+        customServiceDiv.innerHTML = '';
         customServiceDiv.classList.add('hidden');
     }
 }
 
- function filterServices(serviceType) {
-            const serviceItems = document.querySelectorAll('.service-item');
-            
-            if (serviceType === '') {
-                serviceItems.forEach(item => {
-                    item.style.display = 'block';  // Exibe todos os serviços
-                });
-            } else {
-                serviceItems.forEach(item => {
-                    if (item.getAttribute('data-service-type') === serviceType) {
-                        item.style.display = 'block';  // Exibe o serviço correspondente
-                    } else {
-                        item.style.display = 'none';   // Esconde os outros
-                    }
-                });
-            }
-        }
+function filterServices(serviceType) {
+    const serviceItems = document.querySelectorAll('.service-item');
 
-        const dropdownButton = document.getElementById('dropdownButton');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-        
-        dropdownButton.addEventListener('click', () => {
-            dropdownMenu.classList.toggle('hidden');  
+    if (serviceType === '') {
+        serviceItems.forEach(item => {
+            item.style.display = 'block';
         });
+    } else {
+        serviceItems.forEach(item => {
+            if (item.getAttribute('data-service-type') === serviceType) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+}
 
-        const closeDropdown = () => {
-            dropdownMenu.classList.add('hidden');  
-        };
+const dropdownButton = document.getElementById('dropdownButton');
+const dropdownMenu = document.getElementById('dropdownMenu');
 
-        document.getElementById('closeDropdown').addEventListener('click', closeDropdown);
+dropdownButton.addEventListener('click', () => {
+    dropdownMenu.classList.toggle('hidden');
+});
+
+const closeDropdown = () => {
+    dropdownMenu.classList.add('hidden');
+};
+
+document.getElementById('closeDropdown').addEventListener('click', closeDropdown);
 
 serviceType.addEventListener('change', customServiceType);
 buttonThemeDesktop.addEventListener('click', toggleTheme);
