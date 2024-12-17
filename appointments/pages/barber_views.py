@@ -1,11 +1,17 @@
 import os
 import requests
 from rest_framework import viewsets
+from rest_framework.views import APIView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.views.generic.edit import UpdateView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 from django.views.generic import ListView, View
 from ..forms.barber_forms import ServiceForm
-from ..models import BarberService
+from ..models import BarberService, Scheduling, CustomUser
+
 from ..serializers import ServiceSerializer
 
 
@@ -138,6 +144,75 @@ class ServicesListView(LoginRequiredMixin, ListView):
             'obj': services,
         }
         return render(self.request, self.template_name, context)
+
+
+class DashboardView(LoginRequiredMixin, APIView):
+    template_name = 'appointments/dashboard.html'
+
+    def get_total_users(self):
+        return CustomUser.objects.count()
+
+    def get_total_employees(self):
+        employee = CustomUser.objects.filter(user_type='employee').count()
+        owners = CustomUser.objects.filter(user_type='superuser').count()
+        return employee + owners
+
+    def get_total_appointments(self):
+        return Scheduling.objects.count()
+
+    def get_total_services(self):
+        return BarberService.objects.values('service_name').distinct().count()
+
+    def get_appointments(self):
+        api_url = os.getenv('SCHEDULES_API_URL')
+        if not api_url:
+            messages.error(self.request, 'URL da API não está configurada.')
+            return []
+
+        if self.request.user.is_client():  # type:ignore
+            return redirect('appointments:index')
+
+        try:
+            response = requests.get(api_url)
+            response.raise_for_status()
+            schedules = response.json().get('results', [])
+            return schedules
+
+        except requests.exceptions.RequestException as e:
+            messages.error(
+                self.request, f'Erro ao pegar informações: {str(e)}')
+            return []
+
+    def get(self, request, *args, **kwargs):
+        total_users = self.get_total_users()
+        total_employees = self.get_total_employees()
+        total_appointments = self.get_total_appointments()
+        total_services = self.get_total_services()
+        appointments = self.get_appointments()
+
+        context = {
+            'total_users': total_users,
+            'total_employees': total_employees,
+            'total_appointments': total_appointments,
+            'total_services': total_services,
+            'appointments': appointments,
+            'status_choices': Scheduling.STATUS_CHOICES
+        }
+
+        return render(request, self.template_name, context)
+
+
+class UpdateStatusView(SuccessMessageMixin, UpdateView):
+    model = Scheduling
+    fields = ['status']
+    template_name = 'appointments/status_update.html'
+    success_message = 'Status atualizado com sucesso!'
+    success_url = reverse_lazy('appointments:dashboard')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status_choices'] = Scheduling.STATUS_CHOICES
+        return context
 
 
 class ServiceViewSet(viewsets.ModelViewSet):

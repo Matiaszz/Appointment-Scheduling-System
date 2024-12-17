@@ -25,6 +25,8 @@ from appointments.pages.auth_views import (
 from appointments.pages.barber_views import (
     ServicesCreationView,
     ServicesListView,
+    DashboardView,
+    UpdateStatusView
 )
 from appointments.pages.scheduling_views import (
     CreateSchedulingView,
@@ -58,6 +60,9 @@ urlpatterns = [
     # Barber views
     path('services/create/', ServicesCreationView.as_view(), name='services'),
     path('services/list/', ServicesListView.as_view(), name='services_list'),
+    path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    path('services/update_status/<int:pk>',
+         UpdateStatusView.as_view(), name='update_status'),
 
     # Schedule views
     path('schedules/', ReadSchedulingView.as_view(), name='schedules'),

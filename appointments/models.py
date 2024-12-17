@@ -244,3 +244,6 @@ class Scheduling(models.Model):
     def get_formatted_date(self):
         return (
             self.date_time - timedelta(hours=3)).strftime('%d/%m/%Y - %H:%M')
+
+    def get_status_choices(self):
+        return self.STATUS_CHOICES

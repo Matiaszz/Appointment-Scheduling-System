@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-8">
+    <!-- Dashboard Header -->
+    <h1 class="text-3xl font-bold text-gray-100 mb-8">Dashboard - Gerenciamento</h1>
+
+    <!-- Stat Cards - Total Users and Appointments -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Users Card -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-gray-200">Usuários Registrados</h3>
+            <p class="text-3xl font-bold text-gray-100">{{ total_users }}</p>
+        </div>
+
+        <!-- Total Employees Card -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-gray-200">Funcionários Registrados</h3>
+            <p class="text-3xl font-bold text-gray-100">{{ total_employees }}</p>
+            <p class="text-3xl font-bold text-gray-100">Ver Funcionários</p>
+            <a href="#"
+                class="text-blue-500 hover:text-blue-400 text-xl font-semibold">Clique aqui</a>
+        </div>
+
+        <!-- Total Appointments Card -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-gray-200">Agendamentos</h3>
+            <p class="text-3xl font-bold text-gray-100">{{ total_appointments }}</p>
+        </div>
+
+        <!-- Add Employee Card -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-gray-200">Adicionar Funcionário</h3>
+            <a href="{% url 'appointments:auth_employee' %}"
+                class="text-blue-500 hover:text-blue-400 text-xl font-semibold">Clique aqui</a>
+        </div>
+
+        <!-- Total Services Card -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-gray-200">Serviços Realizados</h3>
+            <p class="text-3xl font-bold text-gray-100">{{ total_services }}</p>
+        </div>
+    </div>
+
+    <!-- Appointments Table -->
+    <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold text-gray-200 mb-4">Lista de Agendamentos</h2>
+
+        <table class="min-w-full table-auto text-gray-100">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2 text-left">#</th>
+                    <th class="px-4 py-2 text-left">Cliente</th>
+                    <th class="px-4 py-2 text-left">Serviço</th>
+                    <th class="px-4 py-2 text-left">Status</th>
+                    <th class="px-4 py-2 text-left">Data</th>
+                    <th class="px-4 py-2 text-left">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                <tr>
+                    <td class="px-4 py-2">{{ appointment.id }}</td>
+                    <td class="px-4 py-2">{{ appointment.client_name }}</td>
+                    <td class="px-4 py-2">{{ appointment.service_name }}</td>
+                    <td class="px-4 py-2">
+                        <form method="POST" action="{% url 'appointments:update_status' pk=appointment.id %}">
+                            {% csrf_token %}
+                            <select name="status"
+                                class="bg-gray-700 text-gray-100 px-2 py-1 rounded focus:outline-none">
+                                {% for value, label in status_choices %}
+                                <option value="{{ value }}" {% if appointment.status == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="ml-2 text-blue-500 hover:text-blue-400">
+                                Salvar
+                            </button>
+                        </form>
+                    </td>
+
+                    <td class="px-4 py-2">{{ appointment.formatted_date }}</td>
+                    <td class="px-4 py-2">
+                        <a href="{% url "appointments:update_schedule" schedule_id=appointment.id %}"
+                            class="text-yellow-500 hover:text-yellow-400">Editar</a>
+                        <span class="mx-2">|</span>
+                        <form method="POST" class='inline-flex'
+                            action="{% url 'appointments:delete_schedule' schedule_id=appointment.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="text-red-500 hover:text-red-400">
+                                Deletar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

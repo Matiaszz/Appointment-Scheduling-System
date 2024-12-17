@@ -10,7 +10,7 @@
         {% if request.user.username %}
           <a href="{% url 'appointments:schedules' %}" class="hover:text-gray-200">Meus Agendamentos</a>
           {% if request.user.user_type == 'employee' or request.user.user_type == 'superuser' %}
-            <a href="#" class="hover:text-gray-200">Gerenciamento</a>
+            <a href="{% url "appointments:dashboard" %}" class="hover:text-gray-200">Gerenciamento</a>
           {% endif %}
         {% endif %}
         
@@ -31,7 +31,7 @@
         {% if request.user.username %}
           <a href="{% url 'appointments:schedules' %}" class="flex px-4 py-2 hover:bg-blue-950 w-full justify-center">Meus Agendamentos</a>
           {% if request.user.user_type == 'employee' or request.user.user_type == 'superuser' %}
-            <a href="#" class="flex px-4 py-2 hover:bg-blue-950 w-full justify-center">Gerenciamento</a>
+            <a href="{% url "appointments:dashboard" %}" class="flex px-4 py-2 hover:bg-blue-950 w-full justify-center">Gerenciamento</a>
           {% endif %}
         {% endif %}
       <button class="block px-4 py-2 hover:bg-blue-950 w-full" id="buttonThemeMobile">Trocar Tema</button>
