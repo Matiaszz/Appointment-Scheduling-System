@@ -40,5 +40,5 @@ class ScheduleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Scheduling
-        fields = ['id', 'client', 'service_name', 'formatted_date',
-                  'status', 'notes']
+        fields = ['id', 'client', 'client_name', 'service_name',
+                  'formatted_date', 'status', 'notes']
