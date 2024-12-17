@@ -81,6 +81,9 @@ class CustomUser (AbstractUser):
     phone_number = models.CharField(
         max_length=11, default='', verbose_name='Número de telefone')
 
+    def get_full_name(self) -> str:
+        return super().get_full_name()
+
     def is_superuser_custom(self):
         """
         Checks if the user is a superuser.
@@ -211,6 +214,7 @@ class Scheduling(models.Model):
 
     client = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    client_name = models.CharField(max_length=255, blank=True)
     service = models.ForeignKey(
         'BarberService', on_delete=models.CASCADE, verbose_name='Serviço')
     date_time = models.DateTimeField(
@@ -228,6 +232,11 @@ class Scheduling(models.Model):
     calendar_event_id = models.CharField(
         max_length=255, blank=True, null=True,
         default=calendar_id)
+
+    def save(self, *args, **kwargs):
+        if not self.client_name:
+            self.client_name = self.client.get_full_name()
+        super(Scheduling, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.client} - {self.service} em {self.date_time}'

@@ -124,7 +124,7 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView,
 
     model = CustomUser
     field_name = 'email'
-    fields = ['username', 'email', 'phone_number']
+    fields = ['username', 'email', 'first_name', 'last_name', 'phone_number']
     template_name = 'appointments/update_user_info.html'
 
     def get_object(self, queryset=None):
