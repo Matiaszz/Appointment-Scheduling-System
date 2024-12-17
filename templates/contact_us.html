@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 text-white flex flex-col min-h-screen">
+    
+    <nav class="bg-gray-950 text-white shadow">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="text-lg font-bold">
+                <a href="{% url 'appointments:index' %}" class="hover:text-gray-200">Logo</a>
+            </div>
+            <div>
+                <a href="{% url 'appointments:index' %}" class="hover:text-gray-200">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 py-12 text-center">
+        <h1 class="text-4xl font-extrabold mb-8">Entre em Contato</h1>
+        <p class="text-gray-400 mb-6">Fale conosco através das seguintes plataformas:</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <div class="bg-gray-800 rounded-lg p-6 shadow hover:bg-gray-700">
+                <h2 class="text-2xl font-bold mb-4">WhatsApp</h2>
+                <p class="text-gray-400 mb-4">Envie uma mensagem pelo WhatsApp.</p>
+                <a href="https://wa.me/5511999999999" target="_blank" 
+                   class="inline-block bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+                    Enviar Mensagem
+                </a>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg p-6 shadow hover:bg-gray-700">
+                <h2 class="text-2xl font-bold mb-4">E-mail</h2>
+                <p class="text-gray-400 mb-4">Entre em contato por e-mail.</p>
+                <a href="mailto:contato@seudominio.com" 
+                   class="inline-block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
+                    Enviar E-mail
+                </a>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg p-6 shadow hover:bg-gray-700">
+                <h2 class="text-2xl font-bold mb-4">Instagram</h2>
+                <p class="text-gray-400 mb-4">Nos siga e envie mensagens diretas.</p>
+                <a href="https://www.instagram.com/seuperfil" target="_blank"
+                   class="inline-block bg-pink-500 hover:bg-pink-600 text-white py-2 px-4 rounded">
+                    Acessar Instagram
+                </a>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg p-6 shadow hover:bg-gray-700">
+                <h2 class="text-2xl font-bold mb-4">Telefone</h2>
+                <p class="text-gray-400 mb-4">Ligue diretamente para nós.</p>
+                <a href="tel:+5511999999999" 
+                   class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded">
+                    (11) 99999-9999
+                </a>
+
+            </div>
+            
+            <div class="bg-gray-800 rounded-lg p-6 shadow hover:bg-gray-700">
+                <h2 class="text-2xl font-bold mb-4">Facebook</h2>
+                <p class="text-gray-400 mb-4">Curta nossa página no Facebook.</p>
+                <a href="https://www.facebook.com/seupagina" target="_blank"
+                   class="inline-block bg-blue-800 hover:bg-blue-900 text-white py-2 px-4 rounded">
+                    Acessar Facebook
+                </a>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg p-6 shadow hover:bg-gray-700">
+                <h2 class="text-2xl font-bold mb-4">LinkedIn</h2>
+                <p class="text-gray-400 mb-4">Conecte-se conosco pelo LinkedIn.</p>
+                <a href="https://www.linkedin.com/company/seu-perfil" target="_blank"
+                   class="inline-block bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                    Acessar LinkedIn
+                </a>
+            </div>
+        </div>
+    </main>
+    {% include "partials/_footer.html" %}

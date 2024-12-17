@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.shortcuts import render
 from django.conf.urls import handler404
 from appointments.pages.barber_views import ServiceViewSet
 from appointments.pages.scheduling_views import ScheduleViewSet
@@ -35,6 +36,8 @@ urlpatterns = [
     path('', include('appointments.urls')),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('contact/', lambda request: render(request,
+         'contact_us.html'), name='contact'),
 ]
 
 if settings.DEBUG:
