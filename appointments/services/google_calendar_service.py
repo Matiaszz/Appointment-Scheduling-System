@@ -21,11 +21,9 @@ def get_calendar_service():
 
 
 def insert_into_calendar(
-        summary: str, start: datetime, end: datetime, description: str
+        summary: str, start: datetime, end: datetime, description: str):
 
-):
     service = get_calendar_service()
-
     event = {
         'summary': f'Serviço agendado - {summary}',
         'description': description,
@@ -41,14 +39,20 @@ def insert_into_calendar(
 
     try:
         created_event = service.events().insert(
-            calendarId=CALENDAR_ID, body=event
-        ).execute()
-
-        print(
-            f"Evento criado com sucesso! Link: {created_event.get('htmlLink')}"
-        )
-        return True
+            calendarId=CALENDAR_ID, body=event).execute()
+        return created_event
 
     except Exception as e:
         print(f"Erro ao criar evento: {e}")
-        return False
+        return
+
+
+def delete_from_calendar(event_id):
+    service = get_calendar_service()
+    try:
+        service.events().delete(
+            calendarId=CALENDAR_ID, eventId=event_id).execute()
+
+        print(f"Evento {event_id} excluído com sucesso.")
+    except Exception as e:
+        print(f"Erro ao excluir evento: {e}")
