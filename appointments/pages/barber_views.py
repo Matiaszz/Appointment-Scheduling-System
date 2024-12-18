@@ -12,6 +12,7 @@ from django.views.generic import ListView, View
 from ..forms.barber_forms import ServiceForm
 from ..models import BarberService, Scheduling, CustomUser
 from ..utils.validations import OnlyStaffMixin, OnlySuperuserMixin
+from ..utils.api import get_results_api
 from ..serializers import ServiceSerializer
 
 
@@ -159,27 +160,17 @@ class DashboardView(LoginRequiredMixin, OnlyStaffMixin, APIView):
         return Scheduling.objects.count()
 
     def get_total_services(self):
-        return BarberService.objects.values('service_name').distinct().count()
+        api_url = os.getenv('SERVICES_API_URL')
+
+        response = get_results_api(self.request, api_url)
+        total_services = len(response)
+        return total_services
 
     def get_appointments(self):
         api_url = os.getenv('SCHEDULES_API_URL')
-        if not api_url:
-            messages.error(self.request, 'URL da API não está configurada.')
-            return []
 
-        if self.request.user.is_client():  # type:ignore
-            return redirect('appointments:index')
-
-        try:
-            response = requests.get(api_url)
-            response.raise_for_status()
-            schedules = response.json().get('results', [])
-            return schedules
-
-        except requests.exceptions.RequestException as e:
-            messages.error(
-                self.request, f'Erro ao pegar informações: {str(e)}')
-            return []
+        response = get_results_api(self.request, api_url)
+        return response
 
     def get(self, request, *args, **kwargs):
         total_users = self.get_total_users()
