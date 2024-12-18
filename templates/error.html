@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if error_code == 403 %}Acesso Proibido{% elif error_code == 404 %}Página Não Encontrada{% else %}Erro{% endif %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 text-white flex flex-col min-h-screen">
+
+    <nav class="bg-gray-950 text-white shadow">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="text-lg font-bold">
+                <a href="{% url 'appointments:index' %}" class="hover:text-gray-200">Logo</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex flex-col items-center justify-center text-center px-4">
+        <h1 class="text-6xl font-extrabold {% if error_code == 403 %}text-yellow-500{% elif error_code == 404 %}text-red-500{% else %}text-gray-500{% endif %} mb-4">
+            {{ error_code }}
+        </h1>
+        <p class="text-2xl font-semibold mb-6">
+            {% if error_code == 403 %}
+                Acesso Proibido
+            {% elif error_code == 404 %}
+                Oops! Página não encontrada.
+            {% else %}
+                Ocorreu um erro inesperado.
+            {% endif %}
+        </p>
+        <p class="text-gray-400 mb-8">
+            {% if error_code == 403 %}
+                Você não tem permissão para acessar esta página.
+            {% elif error_code == 404 %}
+                A página que você está procurando não existe ou foi removida.
+            {% else %}
+                Por favor, tente novamente mais tarde.
+            {% endif %}
+        </p>
+        <a href="{% url 'appointments:index' %}"
+           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Voltar para a página inicial
+        </a>
+    </main>
+
+    {% include "partials/_footer.html" %}
+</body>
+</html>

@@ -24,5 +24,11 @@ def our_services_view(request):
     return render(request, 'appointments/our_services.html')
 
 
+def custom_403_view(request, exception):
+    return render(
+        request, 'error.html', context={'error_code': 403}, status=403)
+
+
 def custom_404_view(request, exception):
-    return render(request, '404.html', status=404)
+    return render(
+        request, 'error.html', context={'error_code': 404}, status=404)
