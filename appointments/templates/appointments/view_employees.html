@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-8">
+    <!-- Back Button -->
+    <div class="mb-4">
+        <a href="{% url 'appointments:dashboard' %}" class="text-blue-500 hover:text-blue-400 text-lg font-semibold">
+            ← Voltar
+        </a>
+    </div>
+
+    <!-- Header -->
+    <h1 class="text-3xl font-bold text-gray-100 mb-8">Funcionários e Gerentes</h1>
+
+    <!-- Tables for Superusers and Employees -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Superusers Table -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-200 mb-4">Gerentes</h2>
+            <table class="min-w-full table-auto text-gray-100">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-left">#</th>
+                        <th class="px-4 py-2 text-left">Nome</th>
+                        <th class="px-4 py-2 text-left">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for superuser in superusers %}
+                    <tr>
+                        <td class="px-4 py-2">{{ superuser.id }}</td>
+                        <td class="px-4 py-2">{{ superuser.first_name }} {{ superuser.last_name }}</td>
+                        <td class="px-4 py-2">{{ superuser.email }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Employees Table -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-200 mb-4">Funcionários</h2>
+            <table class="min-w-full table-auto text-gray-100">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 text-left">#</th>
+                        <th class="px-4 py-2 text-left">Nome</th>
+                        <th class="px-4 py-2 text-left">Email</th>
+                        <th class="px-4 py-2 text-left">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for employee in employees %}
+                    <tr>
+                        <td class="px-4 py-2">{{ employee.id }}</td>
+                        <td class="px-4 py-2">{{ employee.first_name }} {{ employee.last_name}}</td>
+                        <td class="px-4 py-2">{{ employee.email }}</td>
+                        <td class="px-4 py-2">
+                            {% if user.is_superuser %}
+                            {% comment %} <form method="POST" action="{% url 'appointments:delete_employee' employee.id %}"> {% endcomment %}
+                            <form method="POST" action="#">
+                                {% csrf_token %}
+                                <button type="submit" class="text-red-500 hover:text-red-400">Deletar</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

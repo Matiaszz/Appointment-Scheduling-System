@@ -17,8 +17,8 @@
         <div class="bg-gray-800 p-6 rounded-lg shadow-md">
             <h3 class="text-xl font-semibold text-gray-200">Funcionários Registrados</h3>
             <p class="text-3xl font-bold text-gray-100">{{ total_employees }}</p>
-            <p class="text-3xl font-bold text-gray-100">Ver Funcionários</p>
-            <a href="#"
+            <h3 class="text-3xl font-bold text-gray-100">Ver Funcionários</h3>
+            <a href="{% url "appointments:get_employees" %}"
                 class="text-blue-500 hover:text-blue-400 text-xl font-semibold">Clique aqui</a>
         </div>
 

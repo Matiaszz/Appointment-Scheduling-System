@@ -26,6 +26,7 @@ from appointments.pages.barber_views import (
     ServicesCreationView,
     ServicesListView,
     DashboardView,
+    GetEmployeesView,
     UpdateStatusView
 )
 from appointments.pages.scheduling_views import (
@@ -58,9 +59,11 @@ urlpatterns = [
          name='update_profile_picture'),
 
     # Barber views
+    path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    path('dashboard/employees', GetEmployeesView.as_view(),
+         name='get_employees'),
     path('services/create/', ServicesCreationView.as_view(), name='services'),
     path('services/list/', ServicesListView.as_view(), name='services_list'),
-    path('dashboard/', DashboardView.as_view(), name='dashboard'),
     path('services/update_status/<int:pk>',
          UpdateStatusView.as_view(), name='update_status'),
 

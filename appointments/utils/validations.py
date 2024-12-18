@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.core.exceptions import ValidationError
 from django.forms import forms
 
@@ -31,3 +32,22 @@ class UniqueFieldValidationMixin:
                 f'Este {self.field_name} já está cadastrado.'
             )
         return value
+
+
+class OnlyStaffMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated or request.user.is_client():
+            raise PermissionDenied(
+                'Você não tem permissão para acessar esta página.')
+        return super().dispatch(request, *args, **kwargs)  # type: ignore
+
+
+class OnlySuperuserMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if not (request.user.is_authenticated
+                or not request.user.is_superuser_custom()
+                ):
+            raise PermissionDenied(
+                'Você não tem permissão para acessar esta página.')
+
+        return super().dispatch(request, *args, **kwargs)  # type: ignore

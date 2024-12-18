@@ -11,11 +11,11 @@ from django.contrib import messages
 from django.views.generic import ListView, View
 from ..forms.barber_forms import ServiceForm
 from ..models import BarberService, Scheduling, CustomUser
-
+from ..utils.validations import OnlyStaffMixin, OnlySuperuserMixin
 from ..serializers import ServiceSerializer
 
 
-class ServicesCreationView(LoginRequiredMixin, View):
+class ServicesCreationView(LoginRequiredMixin, OnlyStaffMixin, View):
     """
     ServicesCreationView handles the creation of barber services.
 
@@ -51,8 +51,6 @@ class ServicesCreationView(LoginRequiredMixin, View):
               if the user has permission.
             - Redirects to the home page if the user does not have permission.
         """
-        if request.user.is_client():
-            return redirect('appointments:index')
 
         service_form = ServiceForm()
 
@@ -146,7 +144,7 @@ class ServicesListView(LoginRequiredMixin, ListView):
         return render(self.request, self.template_name, context)
 
 
-class DashboardView(LoginRequiredMixin, APIView):
+class DashboardView(LoginRequiredMixin, OnlyStaffMixin, APIView):
     template_name = 'appointments/dashboard.html'
 
     def get_total_users(self):
@@ -202,7 +200,28 @@ class DashboardView(LoginRequiredMixin, APIView):
         return render(request, self.template_name, context)
 
 
-class UpdateStatusView(SuccessMessageMixin, UpdateView):
+class GetEmployeesView(LoginRequiredMixin, OnlySuperuserMixin, APIView):
+    template_name = 'appointments/view_employees.html'
+
+    def get_employees(self):
+        employees = CustomUser.objects.filter(
+            user_type='employee')
+        return employees
+
+    def get_superusers(self):
+        superusers = CustomUser.objects.filter(
+            user_type='superuser')
+        return superusers
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            'employees': self.get_employees(),
+            'superusers': self.get_superusers(),
+        }
+        return render(request, self.template_name, context)
+
+
+class UpdateStatusView(SuccessMessageMixin, OnlyStaffMixin, UpdateView):
     model = Scheduling
     fields = ['status']
     template_name = 'appointments/status_update.html'
