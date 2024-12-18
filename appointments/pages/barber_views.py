@@ -1,5 +1,4 @@
 import os
-import requests
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -7,7 +6,6 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib import messages
 from django.views.generic import ListView, View
 from ..forms.barber_forms import ServiceForm
 from ..models import BarberService, Scheduling, CustomUser
