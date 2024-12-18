@@ -40,7 +40,7 @@
             <h1 class="text-blue-500 text-3xl font-semibold mb-6">Nossos Serviços</h1>
 
             <div id="servicesGrid" class=" bg-gray-950 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {% for object in obj.results %}
+                {% for object in obj %}
                     {% if object.is_active %}
                         <div class="service-item bg-gray-800 p-4 rounded-lg shadow-lg" data-service-type="{{ object.service_type }}">
                             <img 

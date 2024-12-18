@@ -137,10 +137,10 @@ class ServicesListView(LoginRequiredMixin, ListView):
         """
         api_url = str(os.getenv('SERVICES_API_URL'))
 
-        response = requests.get(api_url)
-        services = response.json()
+        response = get_results_api(self.request, api_url)
+
         context = {
-            'obj': services,
+            'obj': response,
         }
         return render(self.request, self.template_name, context)
 
