@@ -81,9 +81,9 @@
                         </form>
                     </td>
                     {% if appointment.notes %}
-                        <td class="px-4 py-2">Sim</td>
+                        <td class="px-4 py-2 text-green-600">Sim</td>
                     {% else %}
-                        <td class="px-4 py-2">Não</td>
+                        <td class="px-4 py-2 text-red-600">Não</td>
                     {% endif %}
 
                     <td class="px-4 py-2">{{ appointment.formatted_date }}</td>

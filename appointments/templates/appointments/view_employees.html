@@ -23,6 +23,7 @@
                         <th class="px-4 py-2 text-left">#</th>
                         <th class="px-4 py-2 text-left">Nome</th>
                         <th class="px-4 py-2 text-left">Email</th>
+                        <th class="px-4 py-2 text-left">Telefone</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,6 +32,7 @@
                         <td class="px-4 py-2">{{ superuser.id }}</td>
                         <td class="px-4 py-2">{{ superuser.first_name }} {{ superuser.last_name }}</td>
                         <td class="px-4 py-2">{{ superuser.email }}</td>
+                        <td class="px-4 py-2">{{ superuser.phone_number | default:'N/A' }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -46,6 +48,7 @@
                         <th class="px-4 py-2 text-left">#</th>
                         <th class="px-4 py-2 text-left">Nome</th>
                         <th class="px-4 py-2 text-left">Email</th>
+                        <th class="px-4 py-2 text-left">Telefone</th>
                         <th class="px-4 py-2 text-left">Ações</th>
                     </tr>
                 </thead>
@@ -55,6 +58,7 @@
                         <td class="px-4 py-2">{{ employee.id }}</td>
                         <td class="px-4 py-2">{{ employee.first_name }} {{ employee.last_name}}</td>
                         <td class="px-4 py-2">{{ employee.email }}</td>
+                        <td class="px-4 py-2">{{ superuser.phone_number | default:'N/A' }}</td>
                         <td class="px-4 py-2">
                             {% if user.is_superuser %}
                             {% comment %} <form method="POST" action="{% url 'appointments:delete_employee' employee.id %}"> {% endcomment %}
