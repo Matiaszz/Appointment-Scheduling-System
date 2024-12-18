@@ -2,6 +2,29 @@
 
 {% block content %}
 
-    {{schedule.service.price}}
+   
+<div class="container mx-auto px-6 py-8">
+    <h1 class="text-3xl font-bold text-gray-100 mb-8">Detalhes do Agendamento</h1>
+
+    <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+        <p class="text-lg text-gray-100 font-bold"><strong>#:</strong> {{ schedule.id }}</p>
+        <p class="text-lg text-gray-100"><strong>Cliente:</strong> {{ schedule.client_name }}</p>
+        <p class="text-lg text-gray-100"><strong>Serviço:</strong> {{ schedule.service.service_name }}</p>
+        <p class="text-lg text-gray-100"><strong>Data e Hora:</strong> {{ schedule.get_formatted_date }}</p>
+        <p class="text-lg text-gray-100"><strong>Status:</strong> {{ schedule.get_status_display }}</p>
+        <p class="text-lg text-gray-100"><strong>Notas:</strong> {{ schedule.notes }}</p>
+    </div>
+    <div class='pt-7 space-x-2'>
+        <a href="{% url "appointments:update_schedule"  schedule_id=schedule.id %}" class="btn bg-yellow-500 text-white hover:bg-yellow-700 rounded-lg px-4 py-2 shadow-sm">
+            <i class="fas fa-pencil-alt h-5 w-5"></i>
+        </a>
+        <form action="{% url "appointments:delete_schedule" schedule_id=schedule.id %}" method="POST" class="inline">
+            {% csrf_token %}
+            <button type="submit" class="btn bg-red-600 text-white hover:bg-red-800 rounded-lg px-4 py-2 shadow-sm">
+                <i class="fas fa-trash h-5 w-5"></i>
+            </button>
+        </form>
+    </div>
+</div>
 
 {% endblock content %}

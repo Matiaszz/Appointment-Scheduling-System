@@ -53,6 +53,7 @@
                     <th class="px-4 py-2 text-left">Cliente</th>
                     <th class="px-4 py-2 text-left">Serviço</th>
                     <th class="px-4 py-2 text-left">Status</th>
+                    <th class="px-4 py-2 text-left">Observações</th>
                     <th class="px-4 py-2 text-left">Data</th>
                     <th class="px-4 py-2 text-left">Ações</th>
                 </tr>
@@ -79,19 +80,31 @@
                             </button>
                         </form>
                     </td>
+                    {% if appointment.notes %}
+                        <td class="px-4 py-2">Sim</td>
+                    {% else %}
+                        <td class="px-4 py-2">Não</td>
+                    {% endif %}
 
                     <td class="px-4 py-2">{{ appointment.formatted_date }}</td>
                     <td class="px-4 py-2">
+                        <a href="{% url "appointments:detail_schedule" schedule_id=appointment.id %}"
+                            class="text-blue-500 hover:text-blue-400">Ver</a>
+                        <span class="mx-2">|</span>
+
                         <a href="{% url "appointments:update_schedule" schedule_id=appointment.id %}"
                             class="text-yellow-500 hover:text-yellow-400">Editar</a>
                         <span class="mx-2">|</span>
+
                         <form method="POST" class='inline-flex'
                             action="{% url 'appointments:delete_schedule' schedule_id=appointment.id %}">
                             {% csrf_token %}
                             <button type="submit" class="text-red-500 hover:text-red-400">
                                 Deletar
                             </button>
+                            
                         </form>
+                        
                     </td>
                 </tr>
                 {% endfor %}
