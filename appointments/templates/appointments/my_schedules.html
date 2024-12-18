@@ -46,7 +46,7 @@
                                     {% endif %}
                                 </td>
                                 <td class="px-6 py-4 space-x-2">
-                                    <a href="#" class="btn bg-indigo-600 text-white hover:bg-indigo-800 rounded-lg px-4 py-2 shadow-sm">
+                                    <a href="{% url "appointments:detail_schedule" schedule_id=item.id %}" class="btn bg-indigo-600 text-white hover:bg-indigo-800 rounded-lg px-4 py-2 shadow-sm">
                                         <i class="fas fa-search h-5 w-5"></i>
                                     </a>
                                     <a href="{% url "appointments:update_schedule"  schedule_id=item.id %}" class="btn bg-yellow-500 text-white hover:bg-yellow-700 rounded-lg px-4 py-2 shadow-sm">

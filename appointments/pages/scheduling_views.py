@@ -6,11 +6,13 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import View, ListView
 from django.db import transaction
 from django.utils import timezone
+from django.core.exceptions import PermissionDenied
 from ..forms.scheduling_forms import ScheduleForm
 from ..utils.others import get_env
 from ..utils.api import get_results_api
 from ..models import Scheduling
 from ..serializers import ScheduleSerializer
+
 from ..services.google_calendar_service import (
     insert_into_calendar, delete_from_calendar)
 get_env()
@@ -57,7 +59,7 @@ class CreateSchedulingView(LoginRequiredMixin, View):
                       {'form': form})
 
 
-class ReadSchedulingView(LoginRequiredMixin, ListView):
+class ListSchedulesView(LoginRequiredMixin, ListView):
     template_name = 'appointments/my_schedules.html'
     paginate_by = 10
 
@@ -85,6 +87,25 @@ class ReadSchedulingView(LoginRequiredMixin, ListView):
         return self.render_to_response(context)
 
 
+class DetailScheduleView(LoginRequiredMixin, View):
+    template_name = 'appointments/view_my_schedule.html'
+
+    def get(self, request, schedule_id):
+        user = request.user
+        existing_schedule = get_object_or_404(Scheduling, pk=schedule_id)
+
+        if ((existing_schedule.client != user) and user.is_client()):
+
+            raise PermissionDenied(
+                'Você não tem permissão para acessar esta página.')
+
+        context = {
+            'schedule_id': schedule_id,
+            'schedule': existing_schedule
+        }
+        return render(request, self.template_name, context)
+
+
 class UpdateScheduleView(LoginRequiredMixin, View):
     template_name = 'appointments/update_schedule.html'
 
@@ -95,7 +116,8 @@ class UpdateScheduleView(LoginRequiredMixin, View):
         if ((existing_schedule.client != request.user) and
                 request.user.is_client()):
 
-            return render(request, '404.html', status=404)
+            raise PermissionDenied(
+                'Você não tem permissão para acessar esta página.')
 
         new_date_time = existing_schedule.date_time - timezone.timedelta(
             hours=3)
