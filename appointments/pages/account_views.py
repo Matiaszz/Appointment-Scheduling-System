@@ -2,9 +2,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import ValidationError
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import View
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, DeleteView
+from django.core.exceptions import PermissionDenied
+from django.urls import reverse_lazy
 from ..models import CustomUser
 from ..services.user_services import update_profile_picture
 from ..utils.validations import UniqueFieldValidationMixin
@@ -189,3 +191,24 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView,
 
         messages.error(self.request, 'Informações do usuário inválidas.')
         return redirect('appointments:account')
+
+
+class DeactivateAccountView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        user = get_object_or_404(CustomUser, pk=kwargs.get('pk'))
+        print(user, '|', request.user.pk, '|', request.user)
+
+        if (user.pk != request.user.pk) and request.user.is_client():
+            raise PermissionDenied(
+                'Você não tem permissão para acessar esta página.')
+
+        user.is_active = False
+        user.save()
+        messages.info(
+            request,
+            f'A conta do usuário "{user.username}" foi desativada. '
+            'Para reativá-la, entre em contato com o suporte.'
+        )
+
+        return redirect(request.path)

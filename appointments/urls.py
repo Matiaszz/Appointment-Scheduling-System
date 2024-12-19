@@ -15,6 +15,7 @@ from django.urls import path
 from appointments.pages.account_views import (
     AccountView,
     UserProfileUpdateView,
+    DeactivateAccountView,
     update_profile_picture_view,
 )
 from appointments.pages.auth_views import (
@@ -53,11 +54,13 @@ urlpatterns = [
     path('authentication/employee/',
          EmployeeAuthView.as_view(), name='auth_employee'),
 
-    # Update views
+    # Account views
     path('account/update/', UserProfileUpdateView.as_view(),
          name='update_profile'),
     path('account/update/profile_picture/', update_profile_picture_view,
          name='update_profile_picture'),
+    path('account/deactivate/<int:pk>', DeactivateAccountView.as_view(),
+         name='deactivate_account'),
 
     # Barber views
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
