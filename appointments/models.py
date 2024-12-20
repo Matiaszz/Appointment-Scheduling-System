@@ -95,6 +95,17 @@ class CustomUser (AbstractUser):
         """
         return self.user_type == 'superuser'
 
+    def is_manager(self):
+        """
+        Checks if the user is a manager.
+
+        Returns
+        -------
+        bool
+            True if the user is a manager, False otherwise.
+        """
+        return self.user_type == 'manager'
+
     def is_employee(self):
         """
         Checks if the user is an employee.

@@ -10,68 +10,130 @@
     </div>
 
     <!-- Header -->
-    <h1 class="text-3xl font-bold text-gray-100 mb-8">Funcionários e Gerentes</h1>
+    <h1 class="text-3xl font-bold text-gray-100 mb-8 text-center">Funcionários, Gerentes e CEOs</h1>
 
-    <!-- Tables for Superusers and Employees -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Stack Tables for Superusers, Managers, and Employees -->
+    <div class="grid grid-cols-1 gap-6">
         <!-- Superusers Table -->
-        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-            <h2 class="text-2xl font-semibold text-gray-200 mb-4">Gerentes</h2>
-            <table class="min-w-full table-auto text-gray-100">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-2 text-left">#</th>
-                        <th class="px-4 py-2 text-left">Nome</th>
-                        <th class="px-4 py-2 text-left">Email</th>
-                        <th class="px-4 py-2 text-left">Telefone</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for superuser in superusers %}
-                    <tr>
-                        <td class="px-4 py-2">{{ superuser.id }}</td>
-                        <td class="px-4 py-2">{{ superuser.first_name }} {{ superuser.last_name }}</td>
-                        <td class="px-4 py-2">{{ superuser.email }}</td>
-                        <td class="px-4 py-2">{{ superuser.phone_number | default:'N/A' }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="bg-gray-800 rounded-lg shadow-md">
+            <div class="flex justify-center items-center p-6">
+                <h2 class="text-2xl font-semibold text-gray-200 mb-4 text-center cursor-pointer select-none hover:text-blue-600" onclick="toggleDropdown('ceoDropdown')">CEOs</h2>
+            </div>
+            <div id="ceoDropdown" class="hidden overflow-x-auto">
+                <table class="min-w-full table-auto text-gray-100">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 text-left">#</th>
+                            <th class="px-4 py-2 text-left">Nome</th>
+                            <th class="px-4 py-2 text-left">Email</th>
+                            <th class="px-4 py-2 text-left">Telefone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for superuser in superusers %}
+                        <tr>
+                            <td class="px-4 py-2">{{ superuser.id }}</td>
+                            <td class="px-4 py-2">{{ superuser.first_name }} {{ superuser.last_name }}</td>
+                            <td class="px-4 py-2">{{ superuser.email }}</td>
+                            <td class="px-4 py-2">{{ superuser.phone_number | default:'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if user.is_superuser %}
+                <form action='#' class='flex justify-center p-6'>
+                    <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400">Adicionar CEO</button>
+                </form>
+            {% endif %}
+        </div>
+
+        <!-- Managers Table -->
+        <div class="bg-gray-800 rounded-lg shadow-md">
+            <div class="flex justify-center items-center p-6">
+                <h2 class="text-2xl font-semibold text-gray-200 mb-4 text-center cursor-pointer select-none hover:text-blue-600" onclick="toggleDropdown('managerDropdown')">Gerentes</h2>
+                
+            </div>
+            <div id="managerDropdown" class="hidden overflow-x-auto">
+                <table class="min-w-full table-auto text-gray-100">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 text-left">#</th>
+                            <th class="px-4 py-2 text-left">Nome</th>
+                            <th class="px-4 py-2 text-left">Email</th>
+                            <th class="px-4 py-2 text-left">Telefone</th>
+                            <th class="px-4 py-2 text-left">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for manager in managers %}
+                        <tr>
+                            <td class="px-4 py-2">{{ manager.id }}</td>
+                            <td class="px-4 py-2">{{ manager.first_name }} {{ manager.last_name }}</td>
+                            <td class="px-4 py-2">{{ manager.email }}</td>
+                            <td class="px-4 py-2">{{ manager.phone_number | default:'N/A' }}</td>
+                            <td class="px-4 py-2">
+                                {% if user.is_superuser %}
+                                <form method="POST" action="#">
+                                    {% csrf_token %}
+                                    <button type=" submit" class="text-red-500 hover:text-red-400">Deletar</button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if user.is_superuser %}
+                <form action='{% url "appointments:auth_manager" %}' class='flex justify-center p-6'>
+                    <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400">Adicionar Gerente</button>
+                </form>
+            {% endif %}
         </div>
 
         <!-- Employees Table -->
-        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-            <h2 class="text-2xl font-semibold text-gray-200 mb-4">Funcionários</h2>
-            <table class="min-w-full table-auto text-gray-100">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-2 text-left">#</th>
-                        <th class="px-4 py-2 text-left">Nome</th>
-                        <th class="px-4 py-2 text-left">Email</th>
-                        <th class="px-4 py-2 text-left">Telefone</th>
-                        <th class="px-4 py-2 text-left">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for employee in employees %}
-                    <tr>
-                        <td class="px-4 py-2">{{ employee.id }}</td>
-                        <td class="px-4 py-2">{{ employee.first_name }} {{ employee.last_name}}</td>
-                        <td class="px-4 py-2">{{ employee.email }}</td>
-                        <td class="px-4 py-2">{{ superuser.phone_number | default:'N/A' }}</td>
-                        <td class="px-4 py-2">
-                            {% if user.is_superuser %}
-                            {% comment %} <form method="POST" action="{% url 'appointments:delete_employee' employee.id %}"> {% endcomment %}
-                            <form method="POST" action="#">
-                                {% csrf_token %}
-                                <button type="submit" class="text-red-500 hover:text-red-400">Deletar</button>
-                            </form>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="bg-gray-800 rounded-lg shadow-md">
+            <div class="flex justify-center items-center p-6">
+                <h2 class="text-2xl font-semibold text-gray-200 mb-4 text-center cursor-pointer select-none hover:text-blue-600" onclick="toggleDropdown('employeeDropdown')">Funcionários</h2>
+                
+            </div>
+            <div id="employeeDropdown" class="hidden overflow-x-auto">
+                <table class="min-w-full table-auto text-gray-100">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 text-left">#</th>
+                            <th class="px-4 py-2 text-left">Nome</th>
+                            <th class="px-4 py-2 text-left">Email</th>
+                            <th class="px-4 py-2 text-left">Telefone</th>
+                            <th class="px-4 py-2 text-left">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in employees %}
+                        <tr>
+                            <td class="px-4 py-2">{{ employee.id }}</td>
+                            <td class="px-4 py-2">{{ employee.first_name }} {{ employee.last_name }}</td>
+                            <td class="px-4 py-2">{{ employee.email }}</td>
+                            <td class="px-4 py-2">{{ employee.phone_number | default:'N/A' }}</td>
+                            <td class="px-4 py-2">
+                                {% if user.is_superuser or user.user_type == 'manager' %}
+                                <form method="POST" action="#">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-red-500 hover:text-red-400">Deletar</button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% if user.is_superuser or user.user_type == 'manager' %}
+                <form action='{% url "appointments:auth_employee" %}' class='flex justify-center p-6'>
+                    <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400">Adicionar Funcionário</button>
+                </form>
+            {% endif %}
         </div>
     </div>
 </div>

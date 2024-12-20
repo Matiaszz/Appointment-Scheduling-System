@@ -21,6 +21,7 @@ from appointments.pages.account_views import (
 from appointments.pages.auth_views import (
     AuthView,
     EmployeeAuthView,
+    ManagerAuthView,
     logout_view,
 )
 from appointments.pages.barber_views import (
@@ -53,6 +54,8 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('authentication/employee/',
          EmployeeAuthView.as_view(), name='auth_employee'),
+    path('authentication/manager/',
+         ManagerAuthView.as_view(), name='auth_manager'),
 
     # Account views
     path('account/update/', UserProfileUpdateView.as_view(),

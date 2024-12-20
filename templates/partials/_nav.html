@@ -9,7 +9,7 @@
         <a href="{% url "appointments:our_services" %}" class="hover:text-gray-200">Nossos serviços</a>
         {% if request.user.username %}
           <a href="{% url 'appointments:schedules' %}" class="hover:text-gray-200">Meus Agendamentos</a>
-          {% if request.user.user_type == 'employee' or request.user.user_type == 'superuser' %}
+          {% if request.user.is_employee or request.user.is_manager or request.user.is_superuser_custom %}
             <a href="{% url "appointments:dashboard" %}" class="hover:text-gray-200">Gerenciamento</a>
           {% endif %}
         {% endif %}
@@ -28,9 +28,9 @@
     </div>
 
     <div id="mobile-menu" class="hidden md:hidden bg-black">
-        {% if request.user.username %}
+        {% if request.user.is_authenticated%}
           <a href="{% url 'appointments:schedules' %}" class="flex px-4 py-2 hover:bg-blue-950 w-full justify-center">Meus Agendamentos</a>
-          {% if request.user.user_type == 'employee' or request.user.user_type == 'superuser' %}
+          {% if request.user.is_employee or request.user.is_superuser_custom or request.user.is_manager %}
             <a href="{% url "appointments:dashboard" %}" class="flex px-4 py-2 hover:bg-blue-950 w-full justify-center">Gerenciamento</a>
           {% endif %}
         {% endif %}

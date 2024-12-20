@@ -4,9 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import ValidationError
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import View
-from django.views.generic.edit import UpdateView, DeleteView
+from django.views.generic.edit import UpdateView
 from django.core.exceptions import PermissionDenied
-from django.urls import reverse_lazy
 from ..models import CustomUser
 from ..services.user_services import update_profile_picture
 from ..utils.validations import UniqueFieldValidationMixin

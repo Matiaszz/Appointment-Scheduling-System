@@ -9,12 +9,14 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import ListView, View
 from ..forms.barber_forms import ServiceForm
 from ..models import BarberService, Scheduling, CustomUser
-from ..utils.validations import OnlyStaffMixin, OnlySuperuserMixin
+from ..utils.validations import (
+    OnlyStaffMixin, OnlyManagerOrSuperuserMixin)
 from ..utils.api import get_results_api
 from ..serializers import ServiceSerializer
 
 
-class ServicesCreationView(LoginRequiredMixin, OnlyStaffMixin, View):
+class ServicesCreationView(
+        LoginRequiredMixin, OnlyManagerOrSuperuserMixin, View):
     """
     ServicesCreationView handles the creation of barber services.
 
@@ -151,8 +153,9 @@ class DashboardView(LoginRequiredMixin, OnlyStaffMixin, APIView):
 
     def get_total_employees(self):
         employee = CustomUser.objects.filter(user_type='employee').count()
+        managers = CustomUser.objects.filter(user_type='manager').count()
         owners = CustomUser.objects.filter(user_type='superuser').count()
-        return employee + owners
+        return employee + managers + owners
 
     def get_total_appointments(self):
         return Scheduling.objects.count()
@@ -189,7 +192,8 @@ class DashboardView(LoginRequiredMixin, OnlyStaffMixin, APIView):
         return render(request, self.template_name, context)
 
 
-class GetEmployeesView(LoginRequiredMixin, OnlySuperuserMixin, APIView):
+class GetEmployeesView(
+        LoginRequiredMixin, OnlyManagerOrSuperuserMixin, APIView):
     template_name = 'appointments/view_employees.html'
 
     def get_employees(self):
@@ -202,9 +206,15 @@ class GetEmployeesView(LoginRequiredMixin, OnlySuperuserMixin, APIView):
             user_type='superuser')
         return superusers
 
+    def get_managers(self):
+        managers = CustomUser.objects.filter(
+            user_type='manager')
+        return managers
+
     def get(self, request, *args, **kwargs):
         context = {
             'employees': self.get_employees(),
+            'managers': self.get_managers(),
             'superusers': self.get_superusers(),
         }
         return render(request, self.template_name, context)

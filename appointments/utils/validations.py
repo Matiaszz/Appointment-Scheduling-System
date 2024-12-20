@@ -42,6 +42,18 @@ class OnlyStaffMixin:
         return super().dispatch(request, *args, **kwargs)  # type: ignore
 
 
+class OnlyManagerOrSuperuserMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if not (request.user.is_authenticated
+                or not request.user.is_superuser_custom()
+                or not request.user.is_manager()
+                ):
+            raise PermissionDenied(
+                'Você não tem permissão para acessar esta página.')
+
+        return super().dispatch(request, *args, **kwargs)  # type: ignore
+
+
 class OnlySuperuserMixin:
     def dispatch(self, request, *args, **kwargs):
         if not (request.user.is_authenticated

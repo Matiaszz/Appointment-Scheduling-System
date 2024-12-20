@@ -74,6 +74,12 @@ function filterServices(serviceType) {
     }
 }
 
+
+function toggleDropdown(dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    dropdown.classList.toggle('hidden');
+}
+
 function showDeleteModal() {
     document.getElementById('deleteModal').classList.remove('hidden');
 }

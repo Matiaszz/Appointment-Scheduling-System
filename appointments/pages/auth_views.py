@@ -4,7 +4,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.views.generic import View
-from ..forms.account_forms import ClientCreationForm, EmployeeCreationForm
+from django.core.exceptions import PermissionDenied
+from ..forms.account_forms import (
+    ClientCreationForm, EmployeeCreationForm, ManagerCreationForm)
 
 
 class AuthView(View):
@@ -222,3 +224,88 @@ class EmployeeAuthView(LoginRequiredMixin, View):
 
         messages.error(request, 'Erro ao registrar funcionário.')
         return redirect('appointments:auth_employee')
+
+
+class ManagerAuthView(LoginRequiredMixin, View):
+    """
+    EmployeeAuthView handles the authentication and registration of employees.
+
+    This view is accessible only to users with the 'manager' or 'superuser'
+    user type.
+    It allows managers to register new employees through a form.
+
+    Attributes
+    ----------
+    template_name : str
+        The template used to render the employee authentication page.
+
+    Methods
+    -------
+    get(request)
+        Renders the employee authentication page with the employee registration
+        form if the user has permission.
+
+    post(request)
+        Processes the registration of a new employee.
+    """
+    template_name = 'appointments/manager_auth.html'
+
+    def get(self, request):
+        """
+        Handles GET requests to render the employee authentication page.
+
+        Checks if the authenticated user is a manager or superuser.
+        If not, it redirects to the home page.
+
+        Parameters
+        ----------
+        request : HttpRequest
+            The request object containing metadata about the request.
+
+        Returns
+        -------
+        HttpResponse
+            - Renders the employee authentication template with the employee
+              registration form if the user has permission.
+            - Redirects to the home page if the user does not have permission.
+        """
+        if (request.user.is_client()
+                or request.user.is_employee() or request.user.is_manager()):
+
+            raise PermissionDenied(
+                'Você não tem permissão para acessar esta página')
+
+        context = {
+            'manager_form': ManagerCreationForm()
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        """
+        Handles POST requests to process the registration of a new manager.
+
+        Receives the form data, validates it, and saves a new manager.
+        If the manager is successfully registered, a success message is
+        displayed.
+        Otherwise, an error message is shown.
+
+        Parameters
+        ----------
+        request : HttpRequest
+            The request object containing metadata about the request.
+
+        Returns
+        -------
+        HttpResponse
+            Redirects to the manager authentication page with a success
+            or error message based on the outcome of the registration process.
+        """
+        manager_form = ManagerCreationForm(request.POST, request.FILES)
+
+        if manager_form.is_valid():
+            manager_form.save()
+            messages.success(request, 'Gerente registrado com sucesso.')
+            return redirect('appointments:auth_manager')
+
+        messages.error(request, 'Erro ao registrar gerente.')
+        return redirect('appointments:auth_manager')

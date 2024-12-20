@@ -79,6 +79,40 @@ class ClientCreationForm(UserCreationForm, UniqueFieldValidationMixin):
         return user
 
 
+class ManagerCreationForm(UserCreationForm, UniqueFieldValidationMixin):
+    model = CustomUser
+    field_name = 'email'
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'first_name', 'last_name',  'email',
+                  'phone_number', 'password1',
+                  'password2', 'profile_picture']
+
+    def clean_email(self):
+        return self.clean_unique_field()
+
+    def save(self, commit=True):
+        """
+        Saves the user instance with the user_type set to 'manager'
+        by default.
+
+        Args:
+            commit (bool): If True, saves the user instance to the database. If
+                False, returns an unsaved User instance. Defaults to True.
+
+        Returns:
+            CustomUser: The saved or unsaved user instance.
+        """
+        user = super().save(commit=False)
+        user.user_type = 'manager'
+
+        if commit:
+            user.save()
+
+        return user
+
+
 class EmployeeCreationForm(UserCreationForm, UniqueFieldValidationMixin):
     model = CustomUser
     field_name = 'email'
