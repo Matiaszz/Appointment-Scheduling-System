@@ -12,9 +12,9 @@ from ..utils.others import get_env
 from ..utils.api import get_results_api
 from ..models import Scheduling
 from ..serializers import ScheduleSerializer
-
 from ..services.google_calendar_service import (
-    insert_into_calendar, delete_from_calendar)
+    insert_into_calendar, delete_from_calendar
+)
 get_env()
 
 

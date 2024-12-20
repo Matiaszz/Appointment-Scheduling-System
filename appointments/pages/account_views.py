@@ -6,13 +6,14 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import View
 from django.views.generic.edit import UpdateView
 from django.core.exceptions import PermissionDenied
-from django.http import Http404
 from ..models import CustomUser
-from ..services.user_services import update_profile_picture
+from ..services.user_services import (
+    update_profile_picture, UserPermissionMixin
+)
 from ..utils.validations import UniqueFieldValidationMixin
 
 
-class AccountView(LoginRequiredMixin, View):
+class AccountView(LoginRequiredMixin, UserPermissionMixin, View):
     """
     AccountView is responsible for rendering the user's account page.
     This view displays the user's profile and other relevant information.
@@ -49,40 +50,10 @@ class AccountView(LoginRequiredMixin, View):
         HttpResponse
             The response containing the rendered account page.
         """
+
         user_pk = kwargs.get('pk', None)
-
-        if not user_pk or user_pk == request.user.pk:
-            return render(request, self.template_name, {'user': request.user})
-
-        user = get_object_or_404(CustomUser, pk=user_pk)
-
-        if not user.is_active:
-            raise Http404("Página não encontrada.")
-
-        context = {
-            'user': user
-        }
-
-        if request.user.is_superuser_custom():
-            return render(request, self.template_name, context)
-
-        if request.user.is_manager():
-            if user.is_employee() or user.is_client():
-                return render(request, self.template_name, context)
-
-            raise PermissionDenied(
-                'Você não tem permissão para acessar esta página.')
-
-        if request.user.is_employee() or request.user.is_client():
-
-            if user.pk == request.user.pk:
-                return render(request, self.template_name, context)
-
-            raise PermissionDenied(
-                'Você não tem permissão para acessar esta página.')
-
-        raise PermissionDenied(
-            'Você não tem permissão para acessar esta página.')
+        user = self.get_user_with_permissions(request.user, user_pk)
+        return render(request, self.template_name, {'user': user})
 
 
 @login_required
