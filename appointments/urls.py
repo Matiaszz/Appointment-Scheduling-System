@@ -50,7 +50,6 @@ urlpatterns = [
 
     # Auth views
     path('authentication/', AuthView.as_view(), name='authentication'),
-    path('account/', AccountView.as_view(), name='account'),
     path('logout/', logout_view, name='logout'),
     path('authentication/employee/',
          EmployeeAuthView.as_view(), name='auth_employee'),
@@ -58,11 +57,13 @@ urlpatterns = [
          ManagerAuthView.as_view(), name='auth_manager'),
 
     # Account views
+    path('account/', AccountView.as_view(), name='account'),
+    path('account/<int:pk>/', AccountView.as_view(), name='account_with_id'),
     path('account/update/', UserProfileUpdateView.as_view(),
          name='update_profile'),
     path('account/update/profile_picture/', update_profile_picture_view,
          name='update_profile_picture'),
-    path('account/deactivate/<int:pk>', DeactivateAccountView.as_view(),
+    path('account/<int:pk>/deactivate/', DeactivateAccountView.as_view(),
          name='deactivate_account'),
 
     # Barber views

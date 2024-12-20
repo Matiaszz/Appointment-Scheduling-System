@@ -198,17 +198,17 @@ class GetEmployeesView(
 
     def get_employees(self):
         employees = CustomUser.objects.filter(
-            user_type='employee')
+            user_type='employee', is_active=True)
         return employees
 
     def get_superusers(self):
         superusers = CustomUser.objects.filter(
-            user_type='superuser')
+            user_type='superuser', is_active=True)
         return superusers
 
     def get_managers(self):
         managers = CustomUser.objects.filter(
-            user_type='manager')
+            user_type='manager', is_active=True)
         return managers
 
     def get(self, request, *args, **kwargs):

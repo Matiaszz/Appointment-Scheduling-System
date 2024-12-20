@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic import View
 from django.views.generic.edit import UpdateView
 from django.core.exceptions import PermissionDenied
+from django.http import Http404
 from ..models import CustomUser
 from ..services.user_services import update_profile_picture
 from ..utils.validations import UniqueFieldValidationMixin
@@ -48,8 +49,40 @@ class AccountView(LoginRequiredMixin, View):
         HttpResponse
             The response containing the rendered account page.
         """
+        user_pk = kwargs.get('pk', None)
 
-        return render(request, self.template_name)
+        if not user_pk or user_pk == request.user.pk:
+            return render(request, self.template_name, {'user': request.user})
+
+        user = get_object_or_404(CustomUser, pk=user_pk)
+
+        if not user.is_active:
+            raise Http404("Página não encontrada.")
+
+        context = {
+            'user': user
+        }
+
+        if request.user.is_superuser_custom():
+            return render(request, self.template_name, context)
+
+        if request.user.is_manager():
+            if user.is_employee() or user.is_client():
+                return render(request, self.template_name, context)
+
+            raise PermissionDenied(
+                'Você não tem permissão para acessar esta página.')
+
+        if request.user.is_employee() or request.user.is_client():
+
+            if user.pk == request.user.pk:
+                return render(request, self.template_name, context)
+
+            raise PermissionDenied(
+                'Você não tem permissão para acessar esta página.')
+
+        raise PermissionDenied(
+            'Você não tem permissão para acessar esta página.')
 
 
 @login_required
@@ -193,21 +226,26 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView,
 
 
 class DeactivateAccountView(LoginRequiredMixin, View):
-
     def post(self, request, *args, **kwargs):
-        user = get_object_or_404(CustomUser, pk=kwargs.get('pk'))
-        print(user, '|', request.user.pk, '|', request.user)
+        user_pk = kwargs.get('pk', None)
 
-        if (user.pk != request.user.pk) and request.user.is_client():
+        if user_pk:
+            user = get_object_or_404(CustomUser, pk=user_pk)
+
+        else:
+            user = request.user
+
+        if request.user.is_client() and user.pk != request.user.pk:
             raise PermissionDenied(
                 'Você não tem permissão para acessar esta página.')
 
         user.is_active = False
         user.save()
+
         messages.info(
             request,
             f'A conta do usuário "{user.username}" foi desativada. '
             'Para reativá-la, entre em contato com o suporte.'
         )
 
-        return redirect(request.path)
+        return redirect(request.META.get('HTTP_REFERER', '/'))

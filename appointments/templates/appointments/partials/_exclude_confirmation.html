@@ -5,7 +5,7 @@
         <div class="flex justify-end gap-4">
             <button onclick="hideDeleteModal()" 
                     class="bg-gray-300 text-black py-2 px-4 rounded-lg hover:bg-gray-400">Cancelar</button>
-            <form method="post" action="{% url 'appointments:deactivate_account' request.user.pk %}">
+            <form method="post" action="{% url 'appointments:deactivate_account' user.pk %}">
                 {% csrf_token %}
                 <button type="submit" 
                         class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600">Desativar</button>
