@@ -15,6 +15,13 @@ CALENDAR_ID = os.getenv('CALENDAR_ID')
 
 
 def get_calendar_service():
+    """
+    Retrieves the Google Calendar service using the service account
+    credentials.
+
+    Returns:
+        googleapiclient.discovery.Resource: The calendar service instance.
+    """
     credentials = service_account.Credentials.from_service_account_file(
         CREDENTIALS_FILE, scopes=SCOPES)
     return build('calendar', 'v3', credentials=credentials)
@@ -22,7 +29,18 @@ def get_calendar_service():
 
 def insert_into_calendar(
         summary: str, start: datetime, end: datetime, description: str):
+    """
+    Inserts an event into the Google Calendar.
 
+    Args:
+        summary (str): The title of the event.
+        start (datetime): The start date and time of the event.
+        end (datetime): The end date and time of the event.
+        description (str): A description for the event.
+
+    Returns:
+        dict: The created event object if successful, None if failed.
+    """
     service = get_calendar_service()
     event = {
         'summary': f'Serviço agendado - {summary}',
@@ -48,6 +66,15 @@ def insert_into_calendar(
 
 
 def delete_from_calendar(event_id):
+    """
+    Deletes an event from the Google Calendar using its event ID.
+
+    Args:
+        event_id (str): The ID of the event to be deleted.
+
+    Returns:
+        None: Prints a success or error message.
+    """
     service = get_calendar_service()
     try:
         service.events().delete(

@@ -66,9 +66,23 @@ class UserPermissionMixin:
             'You dont have permission to access this page.')
 
 
-def update_profile_picture(user, profile_picture):
+def update_profile_picture(user: CustomUser, profile_picture):
+    """
+    Updates the profile picture of a user.
+
+    Args:
+        user (CustomUser): The user whose profile picture is to be updated.
+        profile_picture (Image): The new profile picture to be uploaded.
+
+    Returns:
+        CustomUser: The updated user object with the new profile picture.
+
+    Raises:
+        ValidationError: If no profile picture is provided.
+    """
     if not profile_picture:
         raise ValidationError('Nenhuma foto foi enviada.')
+
     user.profile_picture = profile_picture
     user.save()
     return user

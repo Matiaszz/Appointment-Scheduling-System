@@ -146,21 +146,52 @@ class ServicesListView(LoginRequiredMixin, ListView):
 
 
 class DashboardView(LoginRequiredMixin, OnlyStaffMixin, APIView):
+    """
+    Provides an overview of the system's key metrics, such as total users,
+    employees,
+    appointments, services, and the list of recent appointments.
+    """
     template_name = 'appointments/dashboard.html'
 
     def get_total_users(self):
+        """
+        Calculates the total number of users in the system.
+
+        Returns:
+            int: The total number of users.
+        """
         return CustomUser.objects.count()
 
     def get_total_employees(self):
+        """
+        Calculates the total number of employees, including employees,
+        managers, and superusers.
+
+        Returns:
+            int: The total number of employees.
+        """
         employee = CustomUser.objects.filter(user_type='employee').count()
         managers = CustomUser.objects.filter(user_type='manager').count()
         owners = CustomUser.objects.filter(user_type='superuser').count()
         return employee + managers + owners
 
     def get_total_appointments(self):
+        """
+        Calculates the total number of appointments in the system.
+
+        Returns:
+            int: The total number of appointments.
+        """
         return Scheduling.objects.count()
 
     def get_total_services(self):
+        """
+        Fetches and calculates the total number of services from an external
+        API.
+
+        Returns:
+            int: The total number of services.
+        """
         api_url = os.getenv('SERVICES_API_URL')
 
         response = get_results_api(self.request, api_url)
@@ -168,12 +199,29 @@ class DashboardView(LoginRequiredMixin, OnlyStaffMixin, APIView):
         return total_services
 
     def get_appointments(self):
+        """
+        Fetches the list of appointments from an external API.
+
+        Returns:
+            list: The list of appointments retrieved from the API.
+        """
         api_url = os.getenv('SCHEDULES_API_URL')
 
         response = get_results_api(self.request, api_url)
         return response
 
     def get(self, request, *args, **kwargs):
+        """
+        Handles the GET request to render the dashboard page with context data.
+
+        Args:
+            request: The HTTP request object.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            HttpResponse: The rendered dashboard page.
+        """
         total_users = self.get_total_users()
         total_employees = self.get_total_employees()
         total_appointments = self.get_total_appointments()
@@ -194,24 +242,57 @@ class DashboardView(LoginRequiredMixin, OnlyStaffMixin, APIView):
 
 class GetEmployeesView(
         LoginRequiredMixin, OnlyManagerOrSuperuserMixin, APIView):
+    """
+    Displays a list of employees, managers, and superusers for authorized
+    users.
+    """
     template_name = 'appointments/view_employees.html'
 
     def get_employees(self):
+        """
+        Fetches active employees from the system.
+
+        Returns:
+            QuerySet: A queryset of active employees.
+        """
         employees = CustomUser.objects.filter(
             user_type='employee', is_active=True)
         return employees
 
     def get_superusers(self):
+        """
+        Fetches active superusers from the system.
+
+        Returns:
+            QuerySet: A queryset of active superusers.
+        """
         superusers = CustomUser.objects.filter(
             user_type='superuser', is_active=True)
         return superusers
 
     def get_managers(self):
+        """
+        Fetches active managers from the system.
+
+        Returns:
+            QuerySet: A queryset of active managers.
+        """
         managers = CustomUser.objects.filter(
             user_type='manager', is_active=True)
         return managers
 
     def get(self, request, *args, **kwargs):
+        """
+        Handles the GET request to render the employees page with context data.
+
+        Args:
+            request: The HTTP request object.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            HttpResponse: The rendered employees page.
+        """
         context = {
             'employees': self.get_employees(),
             'managers': self.get_managers(),
@@ -221,13 +302,25 @@ class GetEmployeesView(
 
 
 class UpdateStatusView(SuccessMessageMixin, OnlyStaffMixin, UpdateView):
+    """
+    Allows staff members to update the status of a scheduling record.
+    """
     model = Scheduling
     fields = ['status']
     template_name = 'appointments/status_update.html'
-    success_message = 'Status atualizado com sucesso!'
+    success_message = 'Status successfully updated!'
     success_url = reverse_lazy('appointments:dashboard')
 
     def get_context_data(self, **kwargs):
+        """
+        Adds additional context data to the template, including status choices.
+
+        Args:
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            dict: The context data for the template.
+        """
         context = super().get_context_data(**kwargs)
         context['status_choices'] = Scheduling.STATUS_CHOICES
         return context

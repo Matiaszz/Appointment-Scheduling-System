@@ -88,14 +88,32 @@ class ListSchedulesView(LoginRequiredMixin, ListView):
 
 
 class DetailScheduleView(LoginRequiredMixin, View):
+    """
+    Displays the details of a user's schedule. Only the client associated with
+    the schedule can view it.
+    """
     template_name = 'appointments/view_my_schedule.html'
 
     def get(self, request, schedule_id):
+        """
+        Handles the GET request to display the schedule details.
+
+        Args:
+            request: The HTTP request object.
+            schedule_id: The ID of the schedule to be displayed.
+
+        Returns:
+            HttpResponse: The rendered schedule details page.
+
+        Raises:
+            PermissionDenied: If a user tries to access another client's
+            schedule.
+        """
+
         user = request.user
         existing_schedule = get_object_or_404(Scheduling, pk=schedule_id)
 
         if ((existing_schedule.client != user) and user.is_client()):
-
             raise PermissionDenied(
                 'You dont have permission to access this page.')
 
@@ -107,15 +125,31 @@ class DetailScheduleView(LoginRequiredMixin, View):
 
 
 class UpdateScheduleView(LoginRequiredMixin, View):
+    """
+    Allows users to update their schedule details. Only the client associated
+    with the schedule can update it.
+    """
     template_name = 'appointments/update_schedule.html'
 
     def get(self, request, schedule_id):
+        """
+        Handles the GET request to display the schedule update form.
 
+        Args:
+            request: The HTTP request object.
+            schedule_id: The ID of the schedule to be updated.
+
+        Returns:
+            HttpResponse: The rendered schedule update page.
+
+        Raises:
+            PermissionDenied: If a user tries to update another client's
+            schedule.
+        """
         existing_schedule = get_object_or_404(Scheduling, pk=schedule_id)
 
         if ((existing_schedule.client != request.user) and
                 request.user.is_client()):
-
             raise PermissionDenied(
                 'You dont have permission to access this page.')
 
@@ -134,6 +168,17 @@ class UpdateScheduleView(LoginRequiredMixin, View):
                       {'form': form, 'schedule_id': schedule_id})
 
     def post(self, request, schedule_id):
+        """
+        Handles the POST request to save the updated schedule details.
+
+        Args:
+            request: The HTTP request object.
+            schedule_id: The ID of the schedule to be updated.
+
+        Returns:
+            HttpResponse: A redirect to the schedule list or the same page
+            with error messages.
+        """
         existing_schedule = get_object_or_404(Scheduling, pk=schedule_id)
 
         form = ScheduleForm(request.POST, instance=existing_schedule)
@@ -179,17 +224,30 @@ class UpdateScheduleView(LoginRequiredMixin, View):
 
 
 class DeleteScheduleView(LoginRequiredMixin, View):
+    """
+    Allows users to delete their schedules. Only the client associated with
+    the schedule can delete it.
+    """
+
     def post(self, request, schedule_id):
+        """
+        Handles the POST request to delete a schedule.
+
+        Args:
+            request: The HTTP request object.
+            schedule_id: The ID of the schedule to be deleted.
+
+        Returns:
+            HttpResponse: A redirect to the schedule list or an error page.
+        """
         existing_schedule = get_object_or_404(Scheduling, pk=schedule_id)
 
         if ((existing_schedule.client != request.user) and
                 request.user.is_client()):
-
             return render(request, '404.html', status=404)
 
         try:
             with transaction.atomic():
-
                 if existing_schedule.calendar_event_id:
                     delete_from_calendar(
                         existing_schedule.calendar_event_id)
@@ -204,5 +262,9 @@ class DeleteScheduleView(LoginRequiredMixin, View):
 
 
 class ScheduleViewSet(viewsets.ModelViewSet):
+    """
+    API viewset for managing schedule objects. Allows CRUD operations on
+    schedules via API.
+    """
     queryset = Scheduling.objects.all().order_by('-pk')
     serializer_class = ScheduleSerializer

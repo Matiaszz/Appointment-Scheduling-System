@@ -197,7 +197,28 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView,
 
 
 class DeactivateAccountView(LoginRequiredMixin, View):
+    """
+    Handles account deactivation for the currently logged-in user or for
+    another user if permitted.
+    """
+
     def post(self, request, *args, **kwargs):
+        """
+        Processes the POST request to deactivate a user account.
+
+        Args:
+            request: The HTTP request object.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            A redirect to the previous page or the root URL if no referer is
+            found.
+
+        Raises:
+            PermissionDenied: If a client user tries to deactivate another
+            user's account.
+        """
         user_pk = kwargs.get('pk', None)
 
         if user_pk:
