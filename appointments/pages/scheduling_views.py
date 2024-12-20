@@ -97,7 +97,7 @@ class DetailScheduleView(LoginRequiredMixin, View):
         if ((existing_schedule.client != user) and user.is_client()):
 
             raise PermissionDenied(
-                'Você não tem permissão para acessar esta página.')
+                'You dont have permission to access this page.')
 
         context = {
             'schedule_id': schedule_id,
@@ -117,7 +117,7 @@ class UpdateScheduleView(LoginRequiredMixin, View):
                 request.user.is_client()):
 
             raise PermissionDenied(
-                'Você não tem permissão para acessar esta página.')
+                'You dont have permission to access this page.')
 
         new_date_time = existing_schedule.date_time - timezone.timedelta(
             hours=3)

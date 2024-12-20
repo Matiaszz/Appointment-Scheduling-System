@@ -273,7 +273,7 @@ class ManagerAuthView(LoginRequiredMixin, View):
                 or request.user.is_employee() or request.user.is_manager()):
 
             raise PermissionDenied(
-                'Você não tem permissão para acessar esta página')
+                'You dont have permission to access this page.')
 
         context = {
             'manager_form': ManagerCreationForm()

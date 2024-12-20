@@ -208,7 +208,7 @@ class DeactivateAccountView(LoginRequiredMixin, View):
 
         if request.user.is_client() and user.pk != request.user.pk:
             raise PermissionDenied(
-                'Você não tem permissão para acessar esta página.')
+                'You dont have permission to access this page.')
 
         user.is_active = False
         user.save()
