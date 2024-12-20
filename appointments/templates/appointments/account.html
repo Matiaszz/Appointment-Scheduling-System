@@ -74,7 +74,7 @@
         <div class='flex justify-start gap-6'>
             {% if request.user.pk == user.pk %}
                 <div class="mt-6">
-                    <a href="{% url 'appointments:index' %}" class="text-blue-500 hover:text-blue-700 underline">Alterar senha</a>
+                    <a href="{% url 'password_change' %}" class="text-blue-500 hover:text-blue-700 underline">Alterar senha</a>
                 </div>
                 <div class="mt-6">
                     <a href="{% url 'appointments:logout' %}" class="text-yellow-300 hover:text-yellow-500 underline">Sair da conta</a>
