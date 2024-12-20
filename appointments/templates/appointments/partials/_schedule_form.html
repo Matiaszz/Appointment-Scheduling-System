@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    
+    <form method="POST" action="{% block form_action %}{% endblock form_action %}" class="bg-gray-800 p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-gray-300 mb-6">{% block form_title %}{% endblock form_title %}</h2>
+        {% csrf_token %}
+        <div class="mb-4">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" name="login" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out">
+            Salvar
+        </button>
+    </form>
+</div>
+{% endblock content %}

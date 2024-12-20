@@ -1,5 +1,4 @@
 from django.core.exceptions import ValidationError
-
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.core.exceptions import PermissionDenied
@@ -34,7 +33,7 @@ class UserPermissionMixin:
             If the target user does not exist or is inactive.
 
         PermissionDenied
-            If the request user does not have permission to view the target user.
+            If the request user doesn't have permission to view the target user.
         """
         if not target_user_pk or target_user_pk == request_user.pk:
             return request_user
