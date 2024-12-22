@@ -44,6 +44,12 @@
         <div class="bg-gray-800 p-6 rounded-lg shadow-md">
             <h3 class="text-xl font-semibold text-gray-200">Serviços Registrados</h3>
             <p class="text-3xl font-bold text-gray-100">{{ total_services }}</p>
+            {% if request.user.is_manager or request.user.is_superuser_custom %}
+                <a href="{% url 'appointments:create_schedule' %}"
+                    class="mt-4 block bg-blue-500 hover:bg-blue-400 text-white text-center font-semibold py-2 px-4 rounded">
+                Adicionar Serviço
+                </a>
+            {% endif %}
         </div>
     </div>
 
