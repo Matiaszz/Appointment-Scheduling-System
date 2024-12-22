@@ -25,8 +25,9 @@ from appointments.pages.auth_views import (
     logout_view,
 )
 from appointments.pages.barber_views import (
-    ServicesCreationView,
-    ServicesListView,
+    CreateServicesView,
+    ListServicesView,
+    UpdateServicesView,
     DashboardView,
     GetEmployeesView,
     UpdateStatusView
@@ -68,10 +69,12 @@ urlpatterns = [
 
     # Barber views
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
-    path('dashboard/employees', GetEmployeesView.as_view(),
+    path('dashboard/employees/', GetEmployeesView.as_view(),
          name='get_employees'),
-    path('services/create/', ServicesCreationView.as_view(), name='services'),
-    path('services/list/', ServicesListView.as_view(), name='services_list'),
+    path('services/create/', CreateServicesView.as_view(), name='services'),
+    path('services/list/', ListServicesView.as_view(), name='services_list'),
+    path('services/update/<int:pk>/', UpdateServicesView.as_view(),
+         name='update_service'),
     path('services/update_status/<int:pk>',
          UpdateStatusView.as_view(), name='update_status'),
 

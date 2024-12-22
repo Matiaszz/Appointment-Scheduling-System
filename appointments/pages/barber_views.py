@@ -2,7 +2,7 @@ import os
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, resolve_url
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -15,7 +15,7 @@ from ..utils.api import get_results_api
 from ..serializers import ServiceSerializer
 
 
-class ServicesCreationView(
+class CreateServicesView(
         LoginRequiredMixin, OnlyManagerOrSuperuserMixin, View):
     """
     ServicesCreationView handles the creation of barber services.
@@ -92,7 +92,7 @@ class ServicesCreationView(
         return render(self.request, 'appointments/services.html', context)
 
 
-class ServicesListView(LoginRequiredMixin, ListView):
+class ListServicesView(LoginRequiredMixin, ListView):
     """
     ServicesListView displays a list of barber services.
 
@@ -143,6 +143,19 @@ class ServicesListView(LoginRequiredMixin, ListView):
             'obj': response,
         }
         return render(self.request, self.template_name, context)
+
+
+class UpdateServicesView(
+        LoginRequiredMixin, OnlyManagerOrSuperuserMixin, UpdateView):
+
+    template_name = 'appointments/update_service.html'
+    model = BarberService
+    fields = ['service_name', 'price', 'service_type',
+              'description', 'image', 'is_active', 'duration']
+    context_object_name = 'service'
+
+    def get_success_url(self):
+        return resolve_url('appointments:services_list')
 
 
 class DashboardView(LoginRequiredMixin, OnlyStaffMixin, APIView):
