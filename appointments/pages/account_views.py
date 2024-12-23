@@ -221,11 +221,8 @@ class DeactivateAccountView(LoginRequiredMixin, View):
         """
         user_pk = kwargs.get('pk', None)
 
-        if user_pk:
-            user = get_object_or_404(CustomUser, pk=user_pk)
-
-        else:
-            user = request.user
+        user = get_object_or_404(
+            CustomUser, pk=user_pk) if user_pk else request.user
 
         if request.user.is_client() and user.pk != request.user.pk:
             raise PermissionDenied(

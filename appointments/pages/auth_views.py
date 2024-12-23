@@ -188,7 +188,8 @@ class EmployeeAuthView(LoginRequiredMixin, View):
             - Redirects to the home page if the user does not have permission.
         """
         if request.user.is_client() or request.user.is_employee():
-            return redirect('appointments:index')
+            raise PermissionDenied(
+                'You dont have permission to access this page.')
 
         context = {
             'employee_form': EmployeeCreationForm()
