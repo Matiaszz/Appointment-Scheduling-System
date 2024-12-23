@@ -45,8 +45,8 @@
                     </tbody>
                 </table>
             </div>
-            {% if user.is_superuser %}
-                <form action='#' class='flex justify-center p-6'>
+            {% if user.is_superuser_custom %}
+                <form action='{% url "appointments:auth_ceo" %}' class='flex justify-center p-6'>
                     <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400">Adicionar CEO</button>
                 </form>
             {% endif %}
@@ -84,7 +84,7 @@
                     </tbody>
                 </table>
             </div>
-            {% if user.is_superuser %}
+            {% if user.is_superuser_custom %}
                 <form action='{% url "appointments:auth_manager" %}' class='flex justify-center p-6'>
                     <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400">Adicionar Gerente</button>
                 </form>
@@ -123,7 +123,7 @@
                     </tbody>
                 </table>
             </div>
-            {% if user.is_superuser or user.user_type == 'manager' %}
+            {% if user.is_superuser_custom or user.is_manager %}
                 <form method='GET' action='{% url "appointments:auth_employee" %}' class='flex justify-center p-6'>
                     <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-400">Adicionar Funcionário</button>
                 </form>

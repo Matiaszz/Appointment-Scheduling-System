@@ -53,11 +53,11 @@ urlpatterns = [
     # Auth views
     path('authentication/', AuthView.as_view(), name='authentication'),
     path('logout/', logout_view, name='logout'),
-    path('authentication/employee/',
+    path('register/employee/',
          EmployeeAuthView.as_view(), name='auth_employee'),
-    path('authentication/manager/',
+    path('register/manager/',
          ManagerAuthView.as_view(), name='auth_manager'),
-    path('authentication/ceo/', CEOAuthView.as_view(), name='auth_ceo'),
+    path('register/ceo/', CEOAuthView.as_view(), name='auth_ceo'),
 
     # Account views
     path('account/', AccountView.as_view(), name='account'),
