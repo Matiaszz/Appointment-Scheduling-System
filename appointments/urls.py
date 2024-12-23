@@ -22,6 +22,7 @@ from appointments.pages.auth_views import (
     AuthView,
     EmployeeAuthView,
     ManagerAuthView,
+    CEOAuthView,
     logout_view,
 )
 from appointments.pages.barber_views import (
@@ -56,6 +57,7 @@ urlpatterns = [
          EmployeeAuthView.as_view(), name='auth_employee'),
     path('authentication/manager/',
          ManagerAuthView.as_view(), name='auth_manager'),
+    path('authentication/ceo/', CEOAuthView.as_view(), name='auth_ceo'),
 
     # Account views
     path('account/', AccountView.as_view(), name='account'),

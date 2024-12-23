@@ -6,7 +6,9 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from django.core.exceptions import PermissionDenied
 from ..forms.account_forms import (
-    ClientCreationForm, EmployeeCreationForm, ManagerCreationForm)
+    ClientCreationForm, EmployeeCreationForm, ManagerCreationForm,
+    CEOCreationForm)
+from ..utils.validations import OnlySuperuserMixin, OnlyManagerOrSuperuserMixin
 
 
 class AuthView(View):
@@ -145,7 +147,7 @@ def logout_view(request):
     return redirect('appointments:authentication')
 
 
-class EmployeeAuthView(LoginRequiredMixin, View):
+class EmployeeAuthView(LoginRequiredMixin, OnlyManagerOrSuperuserMixin, View):
     """
     EmployeeAuthView handles the authentication and registration of employees.
 
@@ -229,7 +231,7 @@ class EmployeeAuthView(LoginRequiredMixin, View):
         return redirect('appointments:auth_employee')
 
 
-class ManagerAuthView(LoginRequiredMixin, View):
+class ManagerAuthView(LoginRequiredMixin, OnlySuperuserMixin, View):
     """
     EmployeeAuthView handles the authentication and registration of employees.
 
@@ -272,11 +274,6 @@ class ManagerAuthView(LoginRequiredMixin, View):
               registration form if the user has permission.
             - Redirects to the home page if the user does not have permission.
         """
-        if (request.user.is_client()
-                or request.user.is_employee() or request.user.is_manager()):
-
-            raise PermissionDenied(
-                'You dont have permission to access this page.')
 
         context = {
             'manager_form': ManagerCreationForm(),
@@ -313,3 +310,84 @@ class ManagerAuthView(LoginRequiredMixin, View):
 
         messages.error(request, 'Erro ao registrar gerente.')
         return redirect('appointments:auth_manager')
+
+
+class CEOAuthView(LoginRequiredMixin, OnlySuperuserMixin, View):
+    """
+    EmployeeAuthView handles the authentication and registration of employees.
+
+    This view is accessible only to users with the 'manager' or 'superuser'
+    user type.
+    It allows managers to register new employees through a form.
+
+    Attributes
+    ----------
+    template_name : str
+        The template used to render the employee authentication page.
+
+    Methods
+    -------
+    get(request)
+        Renders the employee authentication page with the employee registration
+        form if the user has permission.
+
+    post(request)
+        Processes the registration of a new employee.
+    """
+    template_name = 'appointments/ceo_auth.html'
+
+    def get(self, request):
+        """
+        Handles GET requests to render the employee authentication page.
+
+        Checks if the authenticated user is a manager or superuser.
+        If not, it redirects to the home page.
+
+        Parameters
+        ----------
+        request : HttpRequest
+            The request object containing metadata about the request.
+
+        Returns
+        -------
+        HttpResponse
+            - Renders the employee authentication template with the employee
+              registration form if the user has permission.
+            - Redirects to the home page if the user does not have permission.
+        """
+
+        context = {
+            'ceo_form': CEOCreationForm(),
+            'title': 'Registro de CEO',
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        """
+        Handles POST requests to process the registration of a new manager.
+
+        Receives the form data, validates it, and saves a new manager.
+        If the manager is successfully registered, a success message is
+        displayed.
+        Otherwise, an error message is shown.
+
+        Parameters
+        ----------
+        request : HttpRequest
+            The request object containing metadata about the request.
+
+        Returns
+        -------
+        HttpResponse
+            Redirects to the manager authentication page with a success
+            or error message based on the outcome of the registration process.
+        """
+        ceo_form = CEOCreationForm(request.POST, request.FILES)
+
+        if ceo_form.is_valid():
+            ceo_form.save()
+            messages.success(request, 'CEO registrado com sucesso.')
+            return redirect('appointments:auth_ceo')
+
+        messages.error(request, 'Erro ao registrar CEO.')
+        return redirect('appointments:auth_ceo')

@@ -118,7 +118,7 @@ class OnlyStaffMixin:
         """
         if not request.user.is_authenticated or request.user.is_client():
             raise PermissionDenied(
-                'Você não tem permissão para acessar esta página.')
+                'You dont have permission to access this page.')
         return super().dispatch(request, *args, **kwargs)  # type: ignore
 
 
@@ -163,7 +163,7 @@ class OnlyManagerOrSuperuserMixin:
                 or not request.user.is_manager()
                 ):
             raise PermissionDenied(
-                'Você não tem permissão para acessar esta página.')
+                'You dont have permission to access this page.')
 
         return super().dispatch(request, *args, **kwargs)  # type: ignore
 
@@ -200,10 +200,9 @@ class OnlySuperuserMixin:
         PermissionDenied
             If the user is not authenticated or not a superuser.
         """
-        if not (request.user.is_authenticated
-                or not request.user.is_superuser_custom()
-                ):
+        if (not request.user.is_authenticated
+                or not request.user.is_superuser_custom()):
             raise PermissionDenied(
-                'Você não tem permissão para acessar esta página.')
+                'You dont have permission to access this page.')
 
         return super().dispatch(request, *args, **kwargs)  # type: ignore
