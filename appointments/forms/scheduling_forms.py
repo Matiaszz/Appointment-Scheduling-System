@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from ..models import Scheduling
+from ..models import Scheduling, BarberService
 from datetime import time, timedelta
 from django.utils import timezone
 
@@ -11,6 +11,9 @@ class ScheduleForm(forms.ModelForm):
             'instance' in kwargs) and (kwargs['instance']) else None
 
         super().__init__(*args, **kwargs)
+        self.fields[
+            'service'].queryset = BarberService.objects.filter(  # type: ignore
+            is_active=True)
 
     class Meta:
         model = Scheduling

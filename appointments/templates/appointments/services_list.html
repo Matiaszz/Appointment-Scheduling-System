@@ -56,21 +56,29 @@
 
                                     <a href="{% url "appointments:update_service" pk=object.id %}"
                                     class="text-yellow-500 hover:text-yellow-400">Editar</a>
-                                    
-                                    <span class="mx-2">|</span>
-
-                                    <form method="POST" class='inline-flex'
-                                        action="#">
-                                        {% csrf_token %}
-                                        <button type="submit" class="text-red-500 hover:text-red-400">
-                                            Deletar
-                                        </button>
-                                    </form>
 
                                 {% endif %}
                             </div>
                         </div>
-                        
+                    {% else %}
+                        <div class="service-item bg-gray-800 p-4 rounded-lg shadow-lg" data-service-type="{{ object.service_type }}">
+                            <img 
+                                src="{{ object.image }}" 
+                                alt="Foto do serviço" 
+                                class="w-full h-40 object-cover rounded-md mb-4">
+                            <h2 class="text-blue-400 text-xl font-semibold"><span class='text-red-500'>DESATIVADO: </span>{{ object.service_name }}</h2>
+                            <p class="text-gray-300 mt-2">{{ object.description }}</p>
+                            <p class="text-blue-500 font-bold mt-4">R$ {{ object.price }}</p>
+                            <p class="text-gray-400 mt-2">Duração: {{ object.duration }} minutos</p>
+                            <div class='p-6 flex justify-center'>
+                                {% if request.user.is_manager or request.user.is_superuser_custom %}
+
+                                    <a href="{% url "appointments:update_service" pk=object.id %}"
+                                    class="text-yellow-500 hover:text-yellow-400">Editar</a>
+
+                                {% endif %}
+                            </div>
+                        </div>
                     {% endif %}
                 {% endfor %}
             </div>
