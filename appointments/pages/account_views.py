@@ -53,7 +53,8 @@ class AccountView(LoginRequiredMixin, UserPermissionMixin, View):
 
         user_pk = kwargs.get('pk', None)
         user = self.get_user_with_permissions(request.user, user_pk)
-        return render(request, self.template_name, {'user': user})
+        return render(request, self.template_name,
+                      {'user': user, 'title': 'Conta'})
 
 
 @login_required

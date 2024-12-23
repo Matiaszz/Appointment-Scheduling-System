@@ -21,7 +21,9 @@ get_env()
 class CreateSchedulingView(LoginRequiredMixin, View):
     def get(self, request):
         context = {
-            'form': ScheduleForm()
+            'form': ScheduleForm(),
+            'title': 'Criar Agendamento',
+
         }
         return render(
             request, 'appointments/create_scheduling.html', context
@@ -83,7 +85,8 @@ class ListSchedulesView(LoginRequiredMixin, ListView):
         Handles GET requests to fetch and display the list of schedules.
         """
         self.object_list = self.get_queryset()
-        context = self.get_context_data(object_list=self.object_list)
+        context = self.get_context_data(
+            object_list=self.object_list, title='Meus Agendamentos')
         return self.render_to_response(context)
 
 
@@ -119,7 +122,9 @@ class DetailScheduleView(LoginRequiredMixin, View):
 
         context = {
             'schedule_id': schedule_id,
-            'schedule': existing_schedule
+            'schedule': existing_schedule,
+            'title': 'Agendamento',
+
         }
         return render(request, self.template_name, context)
 
@@ -164,8 +169,14 @@ class UpdateScheduleView(LoginRequiredMixin, View):
 
         form = ScheduleForm(initial=initial_data)
 
-        return render(request, self.template_name,
-                      {'form': form, 'schedule_id': schedule_id})
+        context = {
+            'title': 'Atualizar Agendamento',
+            'form': form,
+            'schedule_id': schedule_id,
+
+        }
+
+        return render(request, self.template_name, context)
 
     def post(self, request, schedule_id):
         """

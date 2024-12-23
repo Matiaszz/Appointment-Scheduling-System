@@ -17,18 +17,34 @@ from django.shortcuts import render
 
 
 def index_view(request):
-    return render(request, 'appointments/index.html')
+    return render(request, context={
+        'title': 'Início'
+    }, template_name='appointments/index.html')
 
 
 def our_services_view(request):
-    return render(request, 'appointments/our_services.html')
+    return render(request,
+                  context={
+                      'title': 'Nossos Serviços'
+                  },
+                  template_name='appointments/our_services.html')
 
 
 def custom_403_view(request, exception):
     return render(
-        request, 'error.html', context={'error_code': 403}, status=403)
+        request, 'error.html',
+        context={
+            'error_code': 403,
+            'title': 'Proibido'
+
+        }, status=403)
 
 
 def custom_404_view(request, exception):
     return render(
-        request, 'error.html', context={'error_code': 404}, status=404)
+        request, 'error.html',
+        context={
+            'error_code': 404,
+            'title': 'Página não encontrada'
+
+        }, status=404)

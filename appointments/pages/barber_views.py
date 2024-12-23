@@ -56,7 +56,8 @@ class CreateServicesView(
         service_form = ServiceForm()
 
         context = {
-            'service_form': service_form
+            'service_form': service_form,
+            'title': 'Criar Serviço',
         }
 
         return render(self.request, 'appointments/services.html', context)
@@ -141,6 +142,7 @@ class ListServicesView(LoginRequiredMixin, ListView):
 
         context = {
             'obj': response,
+            'title': 'Catálogo',
         }
         return render(self.request, self.template_name, context)
 
@@ -242,6 +244,7 @@ class DashboardView(LoginRequiredMixin, OnlyStaffMixin, APIView):
         appointments = self.get_appointments()
 
         context = {
+            'title': 'Dashboard',
             'total_users': total_users,
             'total_employees': total_employees,
             'total_appointments': total_appointments,
@@ -307,6 +310,7 @@ class GetEmployeesView(
             HttpResponse: The rendered employees page.
         """
         context = {
+            'title': 'Funcionários',
             'employees': self.get_employees(),
             'managers': self.get_managers(),
             'superusers': self.get_superusers(),

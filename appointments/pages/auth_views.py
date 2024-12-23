@@ -69,7 +69,8 @@ class AuthView(View):
             login_form = AuthenticationForm()
             return render(request, self.template_name, {
                 'client_form': client_form,
-                'login_form': login_form
+                'login_form': login_form,
+                'title': 'Autenticação',
             })
         return redirect('appointments:account')
 
@@ -192,7 +193,8 @@ class EmployeeAuthView(LoginRequiredMixin, View):
                 'You dont have permission to access this page.')
 
         context = {
-            'employee_form': EmployeeCreationForm()
+            'employee_form': EmployeeCreationForm(),
+            'title': 'Registro de Funcionário',
         }
         return render(request, self.template_name, context)
 
@@ -277,7 +279,8 @@ class ManagerAuthView(LoginRequiredMixin, View):
                 'You dont have permission to access this page.')
 
         context = {
-            'manager_form': ManagerCreationForm()
+            'manager_form': ManagerCreationForm(),
+            'title': 'Registro de Gerente',
         }
         return render(request, self.template_name, context)
 
