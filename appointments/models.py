@@ -54,7 +54,7 @@ class CustomUser (AbstractUser):
     """
 
     USER_TYPES = (
-        ('superuser', 'Alto escalão'),
+        ('superuser', 'CEO'),
         ('manager', 'Gerente'),
         ('employee', 'Funcionário'),
         ('client', 'Cliente'),

@@ -4,7 +4,7 @@
 <div class="flex justify-center items-center min-h-screen text-white p-4">
     <div class="shadow-lg rounded-lg p-6 w-full max-w-md border bg-zinc-900 border-gray-700">
         <h2 class="text-2xl font-semibold text-center text-blue-500 mb-4">Cadastro de Funcionário</h2>
-        <form method="POST" enctype="multipart/form-data" action="{% url "appointments:auth_manager" %}" class="space-y-4">
+        <form method="POST" enctype="multipart/form-data" action="{% url "appointments:auth_employee" %}" class="space-y-4">
             {% csrf_token %}
             <div class="space-y-2">
                 {{ employee_form.as_p }}
