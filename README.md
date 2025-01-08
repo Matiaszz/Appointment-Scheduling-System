@@ -57,6 +57,13 @@ npm install -D tailwindcss postcss autoprefixer
 ### Set Up Environment Variables:
 
 Create a .env file inside of a folder named env in the ``Appointment-Scheduling-System`` directory and add your database connection string and other necessary configurations.
+
+### Configure JSON of google calendar API
+
+- Create a folder named ``secrets`` inside of ``Appointment-Scheduling-System`` directory.
+- Create an file named ``barber_service.json`` inside of ``secrets``.
+- put the json file of google calendar api inside this file.
+
 Run the Application:
 
 ```
