@@ -22,6 +22,13 @@ Database: Postgres with railway
 
 ## Installation Instructions
 
+## Prerequisites
+
+- Python 3.12.4
+- Node.js (>= 10.5.0)
+- PostgreSQL (configured with Railway)
+
+
 ### Clone the Repository:
 
 ```
@@ -52,6 +59,7 @@ linux/macOS: source venv/bin/activate
 ```
 pip install -r requirements.txt
 npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init
 ```
 
 ### Set Up Environment Variables:
