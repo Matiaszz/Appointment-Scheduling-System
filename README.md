@@ -22,26 +22,39 @@ Database: Postgres with railway
 
 ## Installation Instructions
 
-Clone the Repository:
+### Clone the Repository:
 
 ```
 git clone https://github.com/Matiaszz/Appointment-Scheduling-System.git
 ```
 
-## Navigate to the Project Directory:
+### Navigate to the Project Directory:
 
 ```
 cd Appointment-Scheduling-System
 ```
 
-## Install Dependencies:
+### Create a venv:
+
+```
+python -m venv venv
+```
+
+### Activate the venv:
+
+```
+windows: .\venv\scripts\activate
+linux/macOS: source venv/bin/activate
+```
+
+### Install Dependencies:
 
 ```
 pip install -r requirements.txt
 npm install -D tailwindcss postcss autoprefixer
 ```
 
-## Set Up Environment Variables:
+### Set Up Environment Variables:
 
 Create a .env file inside of a folder named env in the ``Appointment-Scheduling-System`` directory and add your database connection string and other necessary configurations.
 Run the Application:
